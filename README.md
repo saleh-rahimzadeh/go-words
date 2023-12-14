@@ -236,3 +236,21 @@ Both methods validate input key on calling.
 ## Internationalization and Multi-Language
 
 To internationalization your messages, alerts and ..., visit [Wiki Internationalization](https://github.com/saleh-rahimzadeh/go-words/wiki/Internationalization).
+
+
+
+## Benchmark
+
+```txt
+goos: linux
+goarch: amd64
+pkg: github.com/saleh-rahimzadeh/go-words
+cpu: Intel(R) Core(TM) i3 CPU  @ 2.93GHz
+BenchmarkWordsCollection-4    20031225       62.34 ns/op         0 B/op        0 allocs/op
+BenchmarkWordsRepository-4       65712       16377 ns/op         1 B/op        0 allocs/op
+BenchmarkWordsFile-4              4556      237456 ns/op     19280 B/op     1001 allocs/op
+BenchmarkWordsFileUnsafe-4        5364      236756 ns/op     19280 B/op     1001 allocs/op
+PASS
+coverage: 51.5% of statements
+ok    github.com/saleh-rahimzadeh/go-words  6.400s
+```
