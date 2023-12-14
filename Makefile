@@ -31,3 +31,9 @@ vet:
 ## analyze  : Analyze code using : ► vet ► lint ► fmt
 analyze: vet lint fmt
 .PHONY:analyze
+
+## generate : Generate fake large words for benchmarking
+generate:
+	@cd testdata/scripts; \
+	./generate_words.sh
+.PHONY:generate
