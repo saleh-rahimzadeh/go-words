@@ -70,13 +70,13 @@ k3:v3
 
 	value := w.Get("k1")
 	fmt.Println(value)
-	
+
 	//Output: v1
 }
 
 func ExampleWordsRepository_customComment() {
 	const separator rune = '='
-	const comment rune   = '@'
+	const comment rune = '@'
 	const source string = `
 k1=v1
 @ this is a comment
@@ -90,7 +90,7 @@ k2=v2
 
 	value := w.Get("k1")
 	fmt.Println(value)
-	
+
 	//Output: v1
 }
 
@@ -154,7 +154,7 @@ func ExampleWordsFile() {
 
 	var value_2 string = w.Get("k1")
 	fmt.Println(value_2)
-	
+
 	//Output:
 	// v1
 	// v1
