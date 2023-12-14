@@ -13,17 +13,17 @@ import (
 )
 
 const (
-	PATH_WORDS     string = "../testdata/words/"
-	PATH_BENCHMARK string = "../testdata/benchmark/"
+	path_WORDS     string = "../testdata/words/"
+	path_BENCHMARK string = "../testdata/benchmark/"
 )
 
 func init() {
 	var err error
-	_, err = os.Stat(PATH_WORDS)
+	_, err = os.Stat(path_WORDS)
 	if os.IsNotExist(err) {
 		panic(err)
 	}
-	_, err = os.Stat(PATH_BENCHMARK)
+	_, err = os.Stat(path_BENCHMARK)
 	if os.IsNotExist(err) {
 		panic(err)
 	}
@@ -158,20 +158,20 @@ func TestNormalizeLine(t *testing.T) {
 }
 
 func TestNormalization(t *testing.T) {
-	valid_oneline__source, _ := os.ReadFile(path.Join(PATH_WORDS, "valid_oneline__source"))
-	valid_oneline__want, _ := os.ReadFile(path.Join(PATH_WORDS, "valid_oneline__want"))
-	valid__source, _ := os.ReadFile(path.Join(PATH_WORDS, "valid__source"))
-	valid__want, _ := os.ReadFile(path.Join(PATH_WORDS, "valid__want"))
-	valid_sparse__source, _ := os.ReadFile(path.Join(PATH_WORDS, "valid_sparse__source"))
-	valid_sparse__want, _ := os.ReadFile(path.Join(PATH_WORDS, "valid_sparse__want"))
-	invalid_absent_name, _ := os.ReadFile(path.Join(PATH_WORDS, "invalid_absent_name"))
-	invalid_no_separator, _ := os.ReadFile(path.Join(PATH_WORDS, "invalid_no_separator"))
-	invalid_incorrect_separator, _ := os.ReadFile(path.Join(PATH_WORDS, "invalid_incorrect_separator"))
-	invalid_incorrect_comment, _ := os.ReadFile(path.Join(PATH_WORDS, "invalid_incorrect_comment"))
-	valid_different_separator__source, _ := os.ReadFile(path.Join(PATH_WORDS, "valid_different_separator__source"))
-	valid_different_separator__want, _ := os.ReadFile(path.Join(PATH_WORDS, "valid_different_separator__want"))
-	valid_different_comment__source, _ := os.ReadFile(path.Join(PATH_WORDS, "valid_different_comment__source"))
-	valid_different_comment__want, _ := os.ReadFile(path.Join(PATH_WORDS, "valid_different_comment__want"))
+	valid_oneline__source, _ := os.ReadFile(path.Join(path_WORDS, "valid_oneline__source"))
+	valid_oneline__want, _ := os.ReadFile(path.Join(path_WORDS, "valid_oneline__want"))
+	valid__source, _ := os.ReadFile(path.Join(path_WORDS, "valid__source"))
+	valid__want, _ := os.ReadFile(path.Join(path_WORDS, "valid__want"))
+	valid_sparse__source, _ := os.ReadFile(path.Join(path_WORDS, "valid_sparse__source"))
+	valid_sparse__want, _ := os.ReadFile(path.Join(path_WORDS, "valid_sparse__want"))
+	invalid_absent_name, _ := os.ReadFile(path.Join(path_WORDS, "invalid_absent_name"))
+	invalid_no_separator, _ := os.ReadFile(path.Join(path_WORDS, "invalid_no_separator"))
+	invalid_incorrect_separator, _ := os.ReadFile(path.Join(path_WORDS, "invalid_incorrect_separator"))
+	invalid_incorrect_comment, _ := os.ReadFile(path.Join(path_WORDS, "invalid_incorrect_comment"))
+	valid_different_separator__source, _ := os.ReadFile(path.Join(path_WORDS, "valid_different_separator__source"))
+	valid_different_separator__want, _ := os.ReadFile(path.Join(path_WORDS, "valid_different_separator__want"))
+	valid_different_comment__source, _ := os.ReadFile(path.Join(path_WORDS, "valid_different_comment__source"))
+	valid_different_comment__want, _ := os.ReadFile(path.Join(path_WORDS, "valid_different_comment__want"))
 	type args struct {
 		source    string
 		separator string
@@ -211,22 +211,19 @@ func TestNormalization(t *testing.T) {
 }
 
 func TestValidationSource(t *testing.T) {
-	type args struct {
-		source string
-	}
 	tests := []struct {
 		name    string
-		args    args
+		arg     string
 		wantErr bool
 	}{
-		{"source empty", args{Empty}, true},
-		{"source empty space", args{"      "}, true},
-		{"source empty line", args{"  \n  \n    "}, true},
-		{"valid", args{"-"}, false},
+		{"source empty", Empty, true},
+		{"source empty space", "   ", true},
+		{"source empty line", "  \n  \n    ", true},
+		{"valid", "-", false},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if err := ValidationSource(tt.args.source); (err != nil) != tt.wantErr {
+			if err := ValidationSource(tt.arg); (err != nil) != tt.wantErr {
 				t.Errorf("ValidationSource() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
@@ -260,8 +257,8 @@ func TestValidationDelimiters(t *testing.T) {
 }
 
 func TestCheckDuplication(t *testing.T) {
-	duplicate_nofound, _ := os.ReadFile(path.Join(PATH_WORDS, "duplicate_nofound"))
-	duplicate_found, _ := os.ReadFile(path.Join(PATH_WORDS, "duplicate_found"))
+	duplicate_nofound, _ := os.ReadFile(path.Join(path_WORDS, "duplicate_nofound"))
+	duplicate_found, _ := os.ReadFile(path.Join(path_WORDS, "duplicate_found"))
 	type args struct {
 		source    []string
 		separator string
@@ -314,9 +311,9 @@ func TestValidationName(t *testing.T) {
 	}
 }
 
-func TestCollection(t *testing.T) {
-	data_valid, _ := os.ReadFile(path.Join(PATH_WORDS, "collection"))
-	data_duplicated, _ := os.ReadFile(path.Join(PATH_WORDS, "collection_duplicate"))
+func TestTreasure(t *testing.T) {
+	data_valid, _ := os.ReadFile(path.Join(path_WORDS, "collection"))
+	data_duplicated, _ := os.ReadFile(path.Join(path_WORDS, "collection_duplicate"))
 	tests := []struct {
 		name    string
 		source  []string
@@ -337,13 +334,13 @@ func TestCollection(t *testing.T) {
 	var separator = string(core.Separator)
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := Collection(tt.source, separator)
+			got, err := Treasure(tt.source, separator)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("Collection() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("Treasure() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("Collection() = %v, want %v", got, tt.want)
+				t.Errorf("Treasure() = %v, want %v", got, tt.want)
 			}
 		})
 	}
@@ -353,7 +350,7 @@ func TestCollection(t *testing.T) {
 //└─────────────────────────────────────────────────────────────────────────────────────────────────
 
 func BenchmarkNormalizationSmall(b *testing.B) {
-	data, err := os.ReadFile(path.Join(PATH_BENCHMARK, "normalization__small"))
+	data, err := os.ReadFile(path.Join(path_BENCHMARK, "normalization__small"))
 	if err != nil {
 		b.Fatal(err)
 	}
@@ -366,7 +363,7 @@ func BenchmarkNormalizationSmall(b *testing.B) {
 }
 
 func BenchmarkNormalizationLarge(b *testing.B) {
-	data, err := os.ReadFile(path.Join(PATH_BENCHMARK, "normalization__large"))
+	data, err := os.ReadFile(path.Join(path_BENCHMARK, "normalization__large"))
 	if err != nil {
 		b.Fatal(err)
 	}

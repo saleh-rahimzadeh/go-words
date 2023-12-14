@@ -56,7 +56,7 @@ func NewWordsCollection(source string, separator rune, comment rune) (WordsColle
 		return WordsCollection{}, err
 	}
 
-	collection, err := internal.Collection(repository, separatorCharacter)
+	collection, err := internal.Treasure(repository, separatorCharacter)
 	if err != nil {
 		return WordsCollection{}, err
 	}

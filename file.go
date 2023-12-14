@@ -79,12 +79,18 @@ func (w *WordsFile) FindUnsafe(name string) (value string, found bool) {
 			if errors.Is(err, core.ErrLineEmpty) || errors.Is(err, core.ErrLineComment) {
 				continue
 			}
+			w.fault = err
 			break
 		}
 		if key == name {
 			return value, true
 		}
 	}
+
+	if scanner.Err() != nil {
+		w.fault = scanner.Err()
+	}
+
 	return internal.Empty, false
 }
 

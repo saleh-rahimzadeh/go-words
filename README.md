@@ -2,6 +2,8 @@ go-words
 ========
 
 [![Go Reference](https://pkg.go.dev/badge/github.com/saleh-rahimzadeh/go-words.svg)](https://pkg.go.dev/github.com/saleh-rahimzadeh/go-words)
+[![Go Report Card](https://goreportcard.com/badge/github.com/saleh-rahimzadeh/go-words)](https://goreportcard.com/report/github.com/saleh-rahimzadeh/go-words)
+![Coverage](https://img.shields.io/badge/Coverage-92.6%25-brightgreen)
 
 The **go-words** is a words table and text resource library for Golang projects.
 

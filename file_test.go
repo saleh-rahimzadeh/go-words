@@ -14,6 +14,10 @@ import (
 //┌ Test
 //└─────────────────────────────────────────────────────────────────────────────────────────────────
 
+func TestWordsFile_Words_InterfaceSatisfaction(t *testing.T) {
+	var _ Words = WordsFile{}
+}
+
 func TestNewWordsFile(t *testing.T) {
 	// Arrange
 	file, err := os.Open(path.Join(path_WORDS, "valid__want"))
@@ -30,8 +34,32 @@ func TestNewWordsFile(t *testing.T) {
 	}
 }
 
-func TestWordsFile_Words_InterfaceSatisfaction(t *testing.T) {
-	var _ Words = WordsFile{}
+func TestNewWordsFile_Instantiation(t *testing.T) {
+	file, err := os.Open(path.Join(path_WORDS, "valid__want"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer file.Close()
+	type args struct {
+		file      *os.File
+		separator rune
+		comment   rune
+	}
+	tests := []struct {
+		name string
+		args args
+		want error
+	}{
+		{"check invalid separator delimiters", args{ file: file, separator: 'x', comment: core.Comment, }, core.ErrSeparatorIsInvalid},
+		{"check invalid comment delimiters", args{ file: file, separator: core.Separator, comment: 'x', }, core.ErrCommentIsInvalid},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if _, got := NewWordsFile(tt.args.file, tt.args.separator, tt.args.comment); got == nil {
+				t.Errorf("NewWordsFile() got nil error, want %v", tt.want)
+			}
+		})
+	}
 }
 
 func TestWordsFile_CheckError(t *testing.T) {
@@ -41,6 +69,16 @@ func TestWordsFile_CheckError(t *testing.T) {
 	}
 	defer fileValid.Close()
 	wValid, err := NewWordsFile(fileValid, core.Separator, core.Comment)
+	if err != nil {
+		t.Errorf("NewWordsFile() error = %v", err)
+		return
+	}
+	fileValidSparse, err := os.Open(path.Join(path_WORDS, "valid_sparse__source"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer fileValidSparse.Close()
+	wSparse, err := NewWordsFile(fileValidSparse, core.Separator, core.Comment)
 	if err != nil {
 		t.Errorf("NewWordsFile() error = %v", err)
 		return
@@ -81,6 +119,7 @@ func TestWordsFile_CheckError(t *testing.T) {
 		wantErr bool
 	}{
 		{"valid", &wValid, false},
+		{"valid_sparse", &wSparse, false},
 		{"invalid_duplicate", &wDuplicate, true},
 		{"invalid_absent_name", &wAbsentName, true},
 		{"invalid_no_separator", &wNoSeparator, true},
@@ -155,6 +194,39 @@ func TestWordsFile_Find(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestWordsFile_FindUnsafe(t *testing.T) {
+	file, err := os.Open(path.Join(path_WORDS, "valid_sparse__source"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer file.Close()
+	w, err := NewWordsFile(file, core.Separator, core.Comment)
+	if err != nil {
+		t.Errorf("NewWordsFile() error = %v", err)
+		return
+	}
+	const (
+		arg string = "k7"
+		wantValue string = "v7"
+		wantFound bool = true
+	)
+	gotValue, gotFound := w.FindUnsafe(arg)
+	gotError := w.Err()
+	if gotError != nil {
+		t.Errorf("WordsFile.FindUnsafe() error = %v", gotError)
+		return
+	}
+	if gotValue != wantValue {
+		t.Errorf("WordsFile.FindUnsafe() gotValue = %v, want %v", gotValue, wantValue)
+		return
+	}
+	if gotFound != wantFound {
+		t.Errorf("WordsFile.FindUnsafe() gotFound = %v, want %v", gotFound, wantFound)
+		return
+	}
+
 }
 
 //┌ Benchmark
