@@ -126,7 +126,7 @@ func (w *WordsFile) CheckError() error {
 	return nil
 }
 
-// Err get the error occured in "Find" method
+// Err get the error occurred in "Find" method
 func (w *WordsFile) Err() error {
 	return w.fault
 }

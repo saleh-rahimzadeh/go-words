@@ -8,7 +8,7 @@ package gowords
 
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 
-// Words the interface to specifiy required methods to get and find words
+// Words the interface to specify required methods to get and find words
 type Words interface {
 	// Get search for a name then return value if found, else return empty string
 	Get(string) string
