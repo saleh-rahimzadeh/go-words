@@ -101,17 +101,17 @@ func Normalization(source string, separator string, comment string) ([]string, e
 	return collection, nil
 }
 
-// Collection prepare source as a collection
-func Collection(source []string, separator string) (map[string]string, error) {
-	var collection = make(map[string]string, len(source)+1)
+// Treasure prepare source as a collection
+func Treasure(source []string, separator string) (map[string]string, error) {
+	var treasure = make(map[string]string, len(source)+1)
 	for _, line := range source {
 		key, value, _ := strings.Cut(line, separator)
-		if _, found := collection[key]; found {
+		if _, found := treasure[key]; found {
 			return nil, fmt.Errorf("%w, name '%s'", core.ErrNameDuplicated, key)
 		}
-		collection[key] = value
+		treasure[key] = value
 	}
-	return collection, nil
+	return treasure, nil
 }
 
 // CheckDuplication check for any duplicated names in source

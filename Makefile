@@ -7,6 +7,10 @@
 
 # ------------------------------------------------------------------------------
 
+COVERAGE_FILE = testdata/coverage.out
+
+# ------------------------------------------------------------------------------
+
 help:
 	@egrep "^##" Makefile|sed 's/##//g'
 
@@ -31,6 +35,15 @@ vet:
 ## analyze  : Analyze code using : ► vet ► lint ► fmt
 analyze: vet lint fmt
 .PHONY:analyze
+
+## coverage : Create test coverage file
+coverage:
+	@echo "► coverage"
+	go test ./... -covermode=count -coverprofile=$(COVERAGE_FILE)
+	go tool cover -func=$(COVERAGE_FILE) -o=$(COVERAGE_FILE)
+	@echo -n -e '\n= '
+	@tail -n 1 $(COVERAGE_FILE) | sed 's/total://g;s/	*//g;s/(statements)//g'
+.PHONY:coverage
 
 ## generate : Generate fake large words for benchmarking
 generate:
