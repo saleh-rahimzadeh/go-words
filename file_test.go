@@ -50,13 +50,15 @@ func TestNewWordsFile_Instantiation(t *testing.T) {
 		args args
 		want error
 	}{
+		{"check nil file", args{file: nil, separator: core.Separator, comment: core.Comment, }, core.ErrNilFile},
+		{"check empty file", args{file: &os.File{}, separator: core.Separator, comment: core.Comment, }, core.ErrNilFile},
 		{"check invalid separator delimiters", args{ file: file, separator: 'x', comment: core.Comment, }, core.ErrSeparatorIsInvalid},
 		{"check invalid comment delimiters", args{ file: file, separator: core.Separator, comment: 'x', }, core.ErrCommentIsInvalid},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			if _, got := NewWordsFile(tt.args.file, tt.args.separator, tt.args.comment); got == nil {
-				t.Errorf("NewWordsFile() got nil error, want %v", tt.want)
+				t.Errorf("NewWordsFile() got nil error, want = %v", tt.want)
 			}
 		})
 	}
@@ -123,6 +125,7 @@ func TestWordsFile_CheckError(t *testing.T) {
 		{"invalid_duplicate", &wDuplicate, true},
 		{"invalid_absent_name", &wAbsentName, true},
 		{"invalid_no_separator", &wNoSeparator, true},
+		{"empty WordsFile", &WordsFile{}, true},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -150,7 +153,7 @@ func TestWordsFile_Get(t *testing.T) {
 		want string
 	}{
 		{"found", "k1", "v1"},
-		{"notfound", "kx", internal.Empty},
+		{"notfound", key_NOTFOUND, internal.Empty},
 		{"empty", internal.Empty, internal.Empty},
 	}
 	for _, tt := range tests {
@@ -180,7 +183,7 @@ func TestWordsFile_Find(t *testing.T) {
 		wantFound bool
 	}{
 		{"found", "k1", "v1", true},
-		{"notfound", "kx", internal.Empty, false},
+		{"notfound", key_NOTFOUND, internal.Empty, false},
 		{"empty", internal.Empty, internal.Empty, false},
 	}
 	for _, tt := range tests {
@@ -208,11 +211,10 @@ func TestWordsFile_FindUnsafe(t *testing.T) {
 		return
 	}
 	const (
-		arg string = "k7"
 		wantValue string = "v7"
 		wantFound bool = true
 	)
-	gotValue, gotFound := w.FindUnsafe(arg)
+	gotValue, gotFound := w.FindUnsafe("k7")
 	gotError := w.Err()
 	if gotError != nil {
 		t.Errorf("WordsFile.FindUnsafe() error = %v", gotError)
@@ -226,7 +228,51 @@ func TestWordsFile_FindUnsafe(t *testing.T) {
 		t.Errorf("WordsFile.FindUnsafe() gotFound = %v, want %v", gotFound, wantFound)
 		return
 	}
+}
 
+func TestWordsFile_FindUnsafe_Invalid(t *testing.T) {
+	file, err := os.Open(path.Join(path_WORDS, "invalid_absent_name"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer file.Close()
+	w, err := NewWordsFile(file, core.Separator, core.Comment)
+	if err != nil {
+		t.Errorf("NewWordsFile() error = %v", err)
+		return
+	}
+	w.FindUnsafe(key_NOTFOUND)
+	if w.Err() == nil {
+		t.Errorf("WordsFile.FindUnsafe() got nil error, want = %v", core.ErrNameNotPresent)
+		return
+	}
+}
+
+func TestWordsFile_FindUnsafe_Panic(t *testing.T) {
+	_, wfile, _ := os.Pipe()
+	wNonSeek, _ := NewWordsFile(wfile, core.Separator, core.Comment)
+	closedfile, err := os.Open(path.Join(path_WORDS, "valid__want"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	wClosedFile, _ := NewWordsFile(closedfile, core.Separator, core.Comment)
+	closedfile.Close()
+	tests := []struct {
+		name    string
+		words   *WordsFile
+	}{
+		{"empty WordsFile", &WordsFile{}},
+		{"unsupport seek", &wNonSeek},
+		{"closed file", &wClosedFile},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			tt.words.FindUnsafe(key_NOTFOUND)
+			if tt.words.Err() == nil {
+				t.Errorf("WordsFile.FindUnsafe() got nil error")
+			}
+		})
+	}
 }
 
 //┌ Benchmark

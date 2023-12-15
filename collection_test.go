@@ -59,7 +59,7 @@ func TestNewWordsCollection_Instantiation(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			if _, got := NewWordsCollection(tt.args.source, tt.args.separator, tt.args.comment); got == nil {
-				t.Errorf("NewWordsCollection() got nil error, want %v", tt.want)
+				t.Errorf("NewWordsCollection() got nil error, want = %v", tt.want)
 			}
 		})
 	}
@@ -80,7 +80,7 @@ func TestWordsCollection_Get(t *testing.T) {
 		want string
 	}{
 		{"found", "k1", "v1"},
-		{"notfound", "kx", internal.Empty},
+		{"notfound", key_NOTFOUND, internal.Empty},
 		{"empty", internal.Empty, internal.Empty},
 	}
 	for _, tt := range tests {
@@ -109,7 +109,7 @@ func TestWordsCollection_Find(t *testing.T) {
 	}{
 		{"found", "k1", "v1", true},
 		{"found empty", "k11", internal.Empty, true},
-		{"notfound", "kx", internal.Empty, false},
+		{"notfound", key_NOTFOUND, internal.Empty, false},
 		{"empty", internal.Empty, internal.Empty, false},
 	}
 	for _, tt := range tests {

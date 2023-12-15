@@ -11,6 +11,10 @@ const (
 	path_BENCHMARK string = "testdata/benchmark/"
 )
 
+const (
+	key_NOTFOUND string = "NOT_FOUND_KEY"
+)
+
 func init() {
 	var _ Words = WordsCollection{}
 	var _ Words = WordsFile{}

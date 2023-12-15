@@ -59,7 +59,7 @@ func TestNewWordsRepository_Instantiation(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			if _, got := NewWordsRepository(tt.args.source, tt.args.separator, tt.args.comment); got == nil {
-				t.Errorf("NewWordsRepository() got nil error, want %v", tt.want)
+				t.Errorf("NewWordsRepository() got nil error, want = %v", tt.want)
 			}
 		})
 	}
@@ -81,7 +81,7 @@ func TestWordsRepository_Get(t *testing.T) {
 		want string
 	}{
 		{"found", "k1", "v1"},
-		{"notfound", "kx", internal.Empty},
+		{"notfound", key_NOTFOUND, internal.Empty},
 		{"empty", internal.Empty, internal.Empty},
 	}
 	for _, tt := range tests {
@@ -111,7 +111,7 @@ func TestWordsRepository_Find(t *testing.T) {
 	}{
 		{"found", "k1", "v1", true},
 		{"found empty", "k11", internal.Empty, true},
-		{"notfound", "kx", internal.Empty, false},
+		{"notfound", key_NOTFOUND, internal.Empty, false},
 		{"empty", internal.Empty, internal.Empty, false},
 	}
 	for _, tt := range tests {

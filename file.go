@@ -4,7 +4,9 @@ import (
 	"bufio"
 	"errors"
 	"fmt"
+	"io"
 	"os"
+	"reflect"
 	"sync"
 
 	"github.com/saleh-rahimzadeh/go-words/core"
@@ -36,7 +38,6 @@ func (w WordsFile) Find(name string) (value string, found bool) {
 	w.mutex.Lock()
 	defer w.mutex.Unlock()
 	return w.FindUnsafe(name)
-
 }
 
 // FindUnsafe search for a name then return value and `true` if found, else return empty string and `false`.
@@ -59,7 +60,7 @@ func (w *WordsFile) FindUnsafe(name string) (value string, found bool) {
 		}
 	}()
 
-	_, err := w.file.Seek(0, 0)
+	_, err := w.file.Seek(0, io.SeekStart)
 	if err != nil {
 		w.fault = err
 		return internal.Empty, false
@@ -80,7 +81,7 @@ func (w *WordsFile) FindUnsafe(name string) (value string, found bool) {
 				continue
 			}
 			w.fault = err
-			break
+			return internal.Empty, false
 		}
 		if key == name {
 			return value, true
@@ -96,8 +97,18 @@ func (w *WordsFile) FindUnsafe(name string) (value string, found bool) {
 
 // CheckError check errors in file.
 // Also check for duplication of names.
-func (w *WordsFile) CheckError() error {
-	_, err := w.file.Seek(0, 0)
+func (w *WordsFile) CheckError() (fault error) {
+	defer func() {
+		if rec := recover(); rec != nil {
+			if err, ok := rec.(error); ok {
+				fault = err
+			} else {
+				fault = core.ErrWords
+			}
+		}
+	}()
+
+	_, err := w.file.Seek(0, io.SeekStart)
 	if err != nil {
 		return err
 	}
@@ -141,6 +152,10 @@ func (w *WordsFile) Err() error {
 
 // NewWordsFile create a new instance of WordsFile
 func NewWordsFile(file *os.File, separator rune, comment rune) (w WordsFile, err error) {
+	if file == nil || reflect.ValueOf(*file).IsZero() {
+		return WordsFile{}, core.ErrNilFile
+	}
+
 	var (
 		separatorCharacter string = string(separator)
 		commentCharacter   string = string(comment)
