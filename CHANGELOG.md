@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.3] - 2023-12-17
+
+### Added
+
+- File validations for `WordsFile`
+- Separate github workflow files for test and coverage
+
+### Changed
+
+- Refine tests
+
 ## [1.0.2] - 2023-12-15
 
 ### Added
@@ -40,3 +51,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [1.0.0]: https://github.com/saleh-rahimzadeh/go-words/releases/tag/v1.0.0
 [1.0.1]: https://github.com/saleh-rahimzadeh/go-words/releases/tag/v1.0.1
 [1.0.2]: https://github.com/saleh-rahimzadeh/go-words/releases/tag/v1.0.2
+[1.0.3]: https://github.com/saleh-rahimzadeh/go-words/releases/tag/v1.0.3
