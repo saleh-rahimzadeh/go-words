@@ -7,46 +7,66 @@
 
 # ------------------------------------------------------------------------------
 
-COVERAGE_FILE = testdata/coverage.out
+COVERAGE_FILE             = testdata/coverage.out
+COVERAGE_PERCENTAGES_FILE = testdata/coverage.percentages.out
+BRANCH := v1.0
 
 # ------------------------------------------------------------------------------
 
 help:
 	@egrep "^##" Makefile|sed 's/##//g'
 
-## fmt      : Applies standard formatting (whitespace, indentation, ...).
+push:
+	git checkout main
+	git merge --no-ff $(BRANCH)
+.PHONY:push
+
+## fmt           : Applies standard formatting (whitespace, indentation, ...).
 fmt:
 	@echo "► fmt"
 	go fmt ./...
 .PHONY:fmt
 
-## lint     : Using static analysis, it finds bugs and performance issues, and enforces style rules.
+## lint          : Using static analysis, it finds bugs and performance issues, and enforces style rules.
 lint:
 	@echo "► lint"
 	staticcheck ./...
 .PHONY:lint
 
-## vet      : Find subtle errors and issues where not caught by the compilers and code may not work as intended.
+## vet           : Find subtle errors and issues where not caught by the compilers and code may not work as intended.
 vet:
 	@echo "► vet"
 	go vet ./...
 .PHONY:vet
 
-## analyze  : Analyze code using : ► vet ► lint ► fmt
+## analyze       : Analyze code using : ► vet ► lint ► fmt
 analyze: vet lint fmt
 .PHONY:analyze
 
-## coverage : Create test coverage file
+## coverage      : Create test coverage file
 coverage:
 	@echo "► coverage"
 	go test ./... -covermode=count -coverprofile=$(COVERAGE_FILE)
-	go tool cover -func=$(COVERAGE_FILE) -o=$(COVERAGE_FILE)
+	go tool cover -func=$(COVERAGE_FILE) -o=$(COVERAGE_PERCENTAGES_FILE)
 	@echo -n -e '\n= '
-	@tail -n 1 $(COVERAGE_FILE) | sed 's/total://g;s/	*//g;s/(statements)//g'
+	@tail -n 1 $(COVERAGE_PERCENTAGES_FILE) | sed 's/total://g;s/	*//g;s/(statements)//g'
 .PHONY:coverage
 
-## generate : Generate fake large words for benchmarking
+## coverage_html : Create HTML representation of coverage file
+coverage_html:
+	@echo "► coverage_html"
+	go test ./... -covermode=count -coverprofile=$(COVERAGE_FILE)
+	go tool cover -html=$(COVERAGE_FILE)
+.PHONY:coverage_html
+
+## generate      : Generate fake large words for benchmarking
 generate:
 	@cd testdata/scripts; \
 	./generate_words.sh
 .PHONY:generate
+
+## generate_ps   : Generate fake large words for benchmarking by PowerShell script
+generate_ps:
+	@cd testdata/scripts; \
+	pwsh -File ./generate_words.ps1
+.PHONY:generate_ps

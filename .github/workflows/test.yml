@@ -1,4 +1,4 @@
-name: Test and Coverage
+name: Test
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
 
-  build:
+  test:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -20,13 +20,3 @@ jobs:
 
     - name: Test
       run: go test ./...
-
-    - name: Coverage
-      run: go test -coverprofile=testdata/coverage.out -covermode=atomic
-
-    - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v3
-      with:
-        files: ./testdata/coverage.out
-      env:
-        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
