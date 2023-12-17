@@ -5,7 +5,7 @@ import (
 	"os"
 	"path"
 
-	. "github.com/saleh-rahimzadeh/go-words"
+	gowords "github.com/saleh-rahimzadeh/go-words"
 )
 
 //┌ WordsRepository Examples
@@ -21,7 +21,7 @@ k2=v2
 k3=v3
 `
 
-	w, err := NewWordsRepository(source, separator, comment)
+	w, err := gowords.NewWordsRepository(source, separator, comment)
 	if err != nil {
 		panic(err)
 	}
@@ -41,7 +41,7 @@ k2=v2
 k3=v3
 `
 
-	w, err := NewWordsRepository(source, separator, comment)
+	w, err := gowords.NewWordsRepository(source, separator, comment)
 	if err != nil {
 		panic(err)
 	}
@@ -63,7 +63,7 @@ k2:v2
 k3:v3
 `
 
-	w, err := NewWordsRepository(source, separator, comment)
+	w, err := gowords.NewWordsRepository(source, separator, comment)
 	if err != nil {
 		panic(err)
 	}
@@ -83,7 +83,7 @@ k1=v1
 k2=v2
 `
 
-	w, err := NewWordsRepository(source, separator, comment)
+	w, err := gowords.NewWordsRepository(source, separator, comment)
 	if err != nil {
 		panic(err)
 	}
@@ -106,7 +106,7 @@ k2=v2
 k3=v3
 `
 
-	w, err := NewWordsCollection(source, separator, comment)
+	w, err := gowords.NewWordsCollection(source, separator, comment)
 	if err != nil {
 		panic(err)
 	}
@@ -137,7 +137,7 @@ func ExampleWordsFile() {
 	const separator rune = '='
 	const comment rune = '#'
 
-	w, err := NewWordsFile(file, separator, comment)
+	w, err := gowords.NewWordsFile(file, separator, comment)
 	if err != nil {
 		panic(err)
 	}

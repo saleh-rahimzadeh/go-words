@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Adding get and find with prefix
+
+## [1.0.4] - 2023-12-
+
+### Added
+
+- Adding "misspell" to Makefile
+- Adding new badges to "README.md"
+
+### Fixed
+
+- Package import in "example_test.go"
+
 ## [1.0.3] - 2023-12-17
 
 ### Added
