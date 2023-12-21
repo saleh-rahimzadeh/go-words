@@ -14,10 +14,6 @@ import (
 //┌ Test
 //└─────────────────────────────────────────────────────────────────────────────────────────────────
 
-func TestWordsFile_Words_InterfaceSatisfaction(t *testing.T) {
-	var _ Words = WordsFile{}
-}
-
 func TestNewWordsFile(t *testing.T) {
 	// Arrange
 	file, err := os.Open(path.Join(path_WORDS, "valid__want"))
@@ -294,7 +290,7 @@ func BenchmarkWordsFile(b *testing.B) {
 			b.Fatal(err)
 		}
 		if !found {
-			b.Fatal("error not found")
+			b.Fatal(benchmark_KEY_NOTFOUND)
 		}
 	}
 }
@@ -315,7 +311,7 @@ func BenchmarkWordsFileUnsafe(b *testing.B) {
 			b.Fatal(err)
 		}
 		if !found {
-			b.Fatal("error not found")
+			b.Fatal(benchmark_KEY_NOTFOUND)
 		}
 	}
 }
