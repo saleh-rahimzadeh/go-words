@@ -166,13 +166,15 @@ func ExampleWordsFile() {
 
 func ExampleWithSuffix() {
 	const source = `
-k1_EN=v1 EN
-k2_EN=v2 EN
-k1_FA=v1 FA
-k2_FA=v2 FA
+k1 = v1
+k1_EN = v1 EN
+k2_EN = v2 EN
+k1_FA = v1 FA
+k2_FA = v2 FA
 `
 
-	w, err := gowords.NewWordsRepository(source, core.Separator, core.Comment)
+	var words gowords.Words
+	words, err := gowords.NewWordsRepository(source, core.Separator, core.Comment)
 	if err != nil {
 		panic(err)
 	}
@@ -182,12 +184,12 @@ k2_FA=v2 FA
 		FA core.Suffix = "_FA"
 	)
 
-	wEN, err := gowords.NewWithSuffix(w, EN)
+	wEN, err := gowords.NewWithSuffix(words, EN)
 	if err != nil {
 		panic(err)
 	}
 
-	wFA, err := gowords.NewWithSuffix(w, FA)
+	wFA, err := gowords.NewWithSuffix(words, FA)
 	if err != nil {
 		panic(err)
 	}
@@ -213,4 +215,73 @@ k2_FA=v2 FA
 	// v2 EN
 	// v1 FA
 	// v2 FA
+}
+
+//┌ Services Example
+//└─────────────────────────────────────────────────────────────────────────────────────────────────
+
+func ExampleGetBy() {
+	const source = `
+k1 = v1
+k1_EN = v1 EN
+k2_EN = v2 EN
+k1_FA = v1 FA
+k2_FA = v2 FA
+`
+
+	var words gowords.Words
+	words, err := gowords.NewWordsRepository(source, core.Separator, core.Comment)
+	if err != nil {
+		panic(err)
+	}
+
+	const (
+		EN core.Suffix = "_EN"
+		FA core.Suffix = "_FA"
+	)
+
+	valueEn := gowords.GetBy(words, "k1", EN)
+	fmt.Println(valueEn)
+
+	valueFa := gowords.GetBy(words, "k1", FA)
+	fmt.Println(valueFa)
+
+	//Output:
+	// v1 EN
+	// v1 FA
+}
+
+func ExampleFindBy() {
+	const source = `
+k1 = v1
+k1_EN = v1 EN
+k2_EN = v2 EN
+k1_FA = v1 FA
+k2_FA = v2 FA
+`
+
+	var words gowords.Words
+	words, err := gowords.NewWordsRepository(source, core.Separator, core.Comment)
+	if err != nil {
+		panic(err)
+	}
+
+	const (
+		EN core.Suffix = "_EN"
+		FA core.Suffix = "_FA"
+	)
+
+	valueEn, foundEn := gowords.FindBy(words, "k1", EN)
+	if foundEn {
+		fmt.Println(valueEn)
+	}
+
+	valueFa, foundFa := gowords.FindBy(words, "k1", FA)
+	if foundFa {
+		fmt.Println(valueFa)
+	}
+
+	//Output:
+	// v1 EN
+	// v1 FA
 }
