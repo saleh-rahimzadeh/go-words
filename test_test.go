@@ -12,7 +12,7 @@ const (
 )
 
 const (
-	key_NOTFOUND string = "NOT_FOUND_KEY"
+	key_NOTFOUND           string = "NOT_FOUND_KEY"
 	benchmark_KEY_NOTFOUND string = "error: key not found, please generate words for benchmarking by `make generate` command"
 )
 

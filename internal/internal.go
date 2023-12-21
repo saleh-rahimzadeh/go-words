@@ -45,7 +45,7 @@ func ValidationName(name string) (string, bool) {
 	return name, true
 }
 
-// ValidationSuffix check suffix validationa and return right trimed suffix, return flase if suffix is invalid
+// ValidationSuffix check suffix validation and return right trimed suffix, return flase if suffix is invalid
 func ValidationSuffix(suffix string) (string, bool) {
 	suffix = strings.TrimRightFunc(suffix, unicode.IsSpace)
 	if suffix == Empty {

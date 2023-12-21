@@ -20,16 +20,39 @@ func TestNewWithSuffix(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	w, err := NewWordsRepository(string(source), core.Separator, core.Comment)
+	sourceFile, err := os.Open(path.Join(path_WORDS, "withsuffix"))
 	if err != nil {
 		t.Fatal(err)
 	}
-	var EN core.Suffix = "_EN"
-	// Act
-	_, err = NewWithSuffix(w, EN)
-	// Assert
+	defer sourceFile.Close()
+	wRepository, err := NewWordsRepository(string(source), core.Separator, core.Comment)
 	if err != nil {
-		t.Errorf("NewWithSuffix() error = %v", err)
+		t.Fatal(err)
+	}
+	wCollection, err := NewWordsCollection(string(source), core.Separator, core.Comment)
+	if err != nil {
+		t.Fatal(err)
+	}
+	wFile, err := NewWordsFile(sourceFile, core.Separator, core.Comment)
+	if err != nil {
+		t.Fatal(err)
+	}
+	const EN core.Suffix = "_EN"
+	// Act
+	_, errRepository := NewWithSuffix(wRepository, EN)
+	_, errCollection := NewWithSuffix(wCollection, EN)
+	_, errFile := NewWithSuffix(wFile, EN)
+	// Assert
+	if errRepository != nil {
+		t.Errorf("NewWithSuffix(WordsRepository) error = %v", err)
+		return
+	}
+	if errCollection != nil {
+		t.Errorf("NewWithSuffix(WordsCollection) error = %v", err)
+		return
+	}
+	if errFile != nil {
+		t.Errorf("NewWithSuffix(WordsFile) error = %v", err)
 		return
 	}
 }
@@ -39,7 +62,8 @@ func TestNewWithSuffix_Instantiation(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	wRepository, err := NewWordsRepository(string(source), core.Separator, core.Comment)
+	var words Words
+	words, err = NewWordsRepository(string(source), core.Separator, core.Comment)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -52,9 +76,9 @@ func TestNewWithSuffix_Instantiation(t *testing.T) {
 		args args
 		want error
 	}{
-		{name: "check invalid words", args: args{words: nil, suffix: "_EN"}, want: core.ErrWordsNil},
-		{name: "check empty suffix", args: args{words: wRepository, suffix: core.Suffix(internal.Empty)}, want: core.ErrSuffixIsInvalid},
-		{name: "check invalid suffix", args: args{words: wRepository, suffix: "  "}, want: core.ErrSuffixIsInvalid},
+		{"check invalid words", args{words: nil, suffix: "_EN"}, core.ErrWordsNil},
+		{"check empty suffix", args{words: words, suffix: core.Suffix(internal.Empty)}, core.ErrSuffixIsInvalid},
+		{"check invalid suffix", args{words: words, suffix: "  "}, core.ErrSuffixIsInvalid},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
