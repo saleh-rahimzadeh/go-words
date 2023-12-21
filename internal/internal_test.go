@@ -7,9 +7,8 @@ import (
 	"strings"
 	"testing"
 
-	. "github.com/saleh-rahimzadeh/go-words/internal"
-
 	"github.com/saleh-rahimzadeh/go-words/core"
+	. "github.com/saleh-rahimzadeh/go-words/internal"
 )
 
 const (
@@ -341,6 +340,33 @@ func TestTreasure(t *testing.T) {
 			}
 			if !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("Treasure() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestValidationSuffix(t *testing.T) {
+	tests := []struct {
+		name        string
+		arg         string
+		wantSuffix  string
+		wantIsValid bool
+	}{
+		{"valid", "EN", "EN", true},
+		{"valid space", " EN", " EN", true},
+		{"valid trim", " EN ", " EN", true},
+		{"invalid", "EN\nEN", Empty, false},
+		{"space", "  ", Empty, false},
+		{"empty", Empty, Empty, false},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			gotName, gotIsValid := ValidationSuffix(tt.arg)
+			if gotName != tt.wantSuffix {
+				t.Errorf("ValidationSuffix() gotName = %v, wantName %v", gotName, tt.wantSuffix)
+			}
+			if gotIsValid != tt.wantIsValid {
+				t.Errorf("ValidationSuffix() gotIsValid = %v, wantIsValid %v", gotIsValid, tt.wantIsValid)
 			}
 		})
 	}

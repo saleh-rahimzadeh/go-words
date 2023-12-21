@@ -19,6 +19,7 @@ const (
 var (
 	ErrWords                   error = errors.New("error in words source")
 	ErrWordsEmpty              error = errors.New("words source is empty")
+	ErrWordsNil                error = errors.New("words is nil")
 	ErrNameNotPresent          error = errors.New("name not present in record")
 	ErrNameDuplicated          error = errors.New("duplicated name found")
 	ErrSameSeparatorAndComment error = errors.New("separator and comment are same character")
@@ -28,4 +29,11 @@ var (
 	ErrLineEmpty               error = errors.New("line is empty")
 	ErrLineComment             error = errors.New("line is comment")
 	ErrNilFile                 error = errors.New("file is nil")
+	ErrSuffixIsInvalid         error = errors.New("suffix is invalid")
 )
+
+//┌ Types
+//└─────────────────────────────────────────────────────────────────────────────────────────────────
+
+// Suffix suffix type for WithSuffix struct
+type Suffix string

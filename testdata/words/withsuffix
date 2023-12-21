@@ -1,0 +1,8 @@
+k1_EN=v1 EN
+k2 _EN=v2 EN
+k3_EN =v3 EN
+k4 _EN =v4 EN
+k1_FA=v1 FA
+kleft _FA=v2 FA space left
+kright_FA =v3 FA space right
+kboth _FA =v4 FA space both

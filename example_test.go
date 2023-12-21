@@ -6,6 +6,7 @@ import (
 	"path"
 
 	gowords "github.com/saleh-rahimzadeh/go-words"
+	"github.com/saleh-rahimzadeh/go-words/core"
 )
 
 //┌ WordsRepository Examples
@@ -158,4 +159,58 @@ func ExampleWordsFile() {
 	//Output:
 	// v1
 	// v1
+}
+
+//┌ WithSuffix Examples
+//└─────────────────────────────────────────────────────────────────────────────────────────────────
+
+func ExampleWithSuffix() {
+	const source = `
+k1_EN=v1 EN
+k2_EN=v2 EN
+k1_FA=v1 FA
+k2_FA=v2 FA
+`
+
+	w, err := gowords.NewWordsRepository(source, core.Separator, core.Comment)
+	if err != nil {
+		panic(err)
+	}
+
+	const (
+		EN core.Suffix = "_EN"
+		FA core.Suffix = "_FA"
+	)
+
+	wEN, err := gowords.NewWithSuffix(w, EN)
+	if err != nil {
+		panic(err)
+	}
+
+	wFA, err := gowords.NewWithSuffix(w, FA)
+	if err != nil {
+		panic(err)
+	}
+
+	value1en := wEN.Get("k1")
+	fmt.Println(value1en)
+
+	value2en, found2en := wEN.Find("k2")
+	if found2en {
+		fmt.Println(value2en)
+	}
+
+	value1fa := wFA.Get("k1")
+	fmt.Println(value1fa)
+
+	value2fa, found2fa := wFA.Find("k2")
+	if found2fa {
+		fmt.Println(value2fa)
+	}
+
+	//Output:
+	// v1 EN
+	// v2 EN
+	// v1 FA
+	// v2 FA
 }
