@@ -9,6 +9,7 @@
 
 COVERAGE_FILE          = testdata/coverage.out
 COVERAGE_ANALYSIS_FILE = testdata/coverage.analysis.out
+
 BRANCH := v1.0
 
 # ------------------------------------------------------------------------------
