@@ -50,10 +50,10 @@ func TestNewWordsFile_Instantiation(t *testing.T) {
 		args args
 		want error
 	}{
-		{"check nil file", args{file: nil, separator: core.Separator, comment: core.Comment, }, core.ErrNilFile},
-		{"check empty file", args{file: &os.File{}, separator: core.Separator, comment: core.Comment, }, core.ErrNilFile},
-		{"check invalid separator delimiters", args{ file: file, separator: 'x', comment: core.Comment, }, core.ErrSeparatorIsInvalid},
-		{"check invalid comment delimiters", args{ file: file, separator: core.Separator, comment: 'x', }, core.ErrCommentIsInvalid},
+		{"check nil file", args{file: nil, separator: core.Separator, comment: core.Comment}, core.ErrNilFile},
+		{"check empty file", args{file: &os.File{}, separator: core.Separator, comment: core.Comment}, core.ErrNilFile},
+		{"check invalid separator delimiters", args{file: file, separator: 'x', comment: core.Comment}, core.ErrSeparatorIsInvalid},
+		{"check invalid comment delimiters", args{file: file, separator: core.Separator, comment: 'x'}, core.ErrCommentIsInvalid},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -212,7 +212,7 @@ func TestWordsFile_FindUnsafe(t *testing.T) {
 	}
 	const (
 		wantValue string = "v7"
-		wantFound bool = true
+		wantFound bool   = true
 	)
 	gotValue, gotFound := w.FindUnsafe("k7")
 	gotError := w.Err()
@@ -258,8 +258,8 @@ func TestWordsFile_FindUnsafe_Panic(t *testing.T) {
 	wClosedFile, _ := NewWordsFile(closedfile, core.Separator, core.Comment)
 	closedfile.Close()
 	tests := []struct {
-		name    string
-		words   *WordsFile
+		name  string
+		words *WordsFile
 	}{
 		{"empty WordsFile", &WordsFile{}},
 		{"unsupport seek", &wNonSeek},

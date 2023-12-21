@@ -50,11 +50,11 @@ func TestNewWordsRepository_Instantiation(t *testing.T) {
 		args args
 		want error
 	}{
-		{"check invalid source", args{ source: internal.Empty, separator: core.Separator, comment: core.Comment, }, core.ErrWordsEmpty},
-		{"check invalid separator delimiters", args{ source: string(valid_source), separator: 'x', comment: core.Comment, }, core.ErrSeparatorIsInvalid},
-		{"check invalid comment delimiters", args{ source: string(valid_source), separator: core.Separator, comment: 'x', }, core.ErrCommentIsInvalid},
-		{"check invalid normalization", args{ source: string(invalid_absent_name), separator: core.Separator, comment: core.Comment, }, core.ErrNameNotPresent},
-		{"check invalid duplication", args{ source: string(data_duplicated), separator: core.Separator, comment: core.Comment, }, core.ErrNameDuplicated},
+		{"check invalid source", args{source: internal.Empty, separator: core.Separator, comment: core.Comment}, core.ErrWordsEmpty},
+		{"check invalid separator delimiters", args{source: string(valid_source), separator: 'x', comment: core.Comment}, core.ErrSeparatorIsInvalid},
+		{"check invalid comment delimiters", args{source: string(valid_source), separator: core.Separator, comment: 'x'}, core.ErrCommentIsInvalid},
+		{"check invalid normalization", args{source: string(invalid_absent_name), separator: core.Separator, comment: core.Comment}, core.ErrNameNotPresent},
+		{"check invalid duplication", args{source: string(data_duplicated), separator: core.Separator, comment: core.Comment}, core.ErrNameDuplicated},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
