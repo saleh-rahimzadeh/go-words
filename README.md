@@ -5,7 +5,7 @@ go-words
 ![Go version](https://img.shields.io/github/go-mod/go-version/saleh-rahimzadeh/go-words)
 [![Go Reference](https://pkg.go.dev/badge/github.com/saleh-rahimzadeh/go-words.svg)](https://pkg.go.dev/github.com/saleh-rahimzadeh/go-words)
 [![Test Status](https://github.com/saleh-rahimzadeh/go-words/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/saleh-rahimzadeh/go-words/actions/workflows/test.yml?query=branch%3Amain)
-![Coverage](https://img.shields.io/badge/Coverage-94.1%25-brightgreen)
+![Coverage](https://img.shields.io/badge/Coverage-94.8%25-brightgreen)
 [![codecov](https://codecov.io/gh/saleh-rahimzadeh/go-words/graph/badge.svg?token=O4EXLIR5ZN)](https://codecov.io/gh/saleh-rahimzadeh/go-words)
 [![Go Report Card](https://goreportcard.com/badge/github.com/saleh-rahimzadeh/go-words)](https://goreportcard.com/report/github.com/saleh-rahimzadeh/go-words)
 [![Awesome Go](https://awesome.re/mentioned-badge.svg)](https://awesome-go.com/translation)
@@ -27,11 +27,15 @@ go get -u github.com/saleh-rahimzadeh/go-words
 Import:
 
 ```go
-import "github.com/saleh-rahimzadeh/go-words"
-import "github.com/saleh-rahimzadeh/go-words/core"
-# OR
-import gowords "github.com/saleh-rahimzadeh/go-words"
-import core "github.com/saleh-rahimzadeh/go-words/core"
+import (
+   "github.com/saleh-rahimzadeh/go-words"
+   "github.com/saleh-rahimzadeh/go-words/core"
+)
+/* OR */
+import (
+   gowords "github.com/saleh-rahimzadeh/go-words"
+   core    "github.com/saleh-rahimzadeh/go-words/core"
+)
 ```
 
 
@@ -238,11 +242,99 @@ println(value, found)  // OUTPUT: "", false
 
 Both methods validate input key on calling.
 
+Visit "[github.com/saleh-rahimzadeh/go-words/blob/main/example_test.go](https://github.com/saleh-rahimzadeh/go-words/blob/main/example_test.go)" to see more samples.
+
+
+
+## Suffixes
+
+Using `WithSuffix` API to provide categorized words table and text resource, usually for internationalization and multi language texts.
+
+To use `WithSuffix`:
+
+1. Provide keys of source with desire suffixes.
+
+   It's better to concate your key and suffixe with `_` character.
+
+2. Define a variable of `Suffix` type from `core` package and instantiate `WithSuffix` API with a instance of `Words` interface (a instance of `NewWordsRepository`, `NewWordsCollection`, and `NewWordsFile`) and defined suffix.
+
+3. Using `Get` and `Find` methods of `WithSuffix` instance to search for a name which applied suffix.
+
+```go
+func main() {
+   const stringSource string = `
+key1_EN = Value 1 English
+key1_FA = Value 1 Farsi
+
+key2_EN = Value 2 English
+key2_FA = Value 2 Farsi
+
+key3_EN = Value 3 English
+key3_FA = Value 3 Farsi
+`
+
+   const EN core.Suffix = "_EN"
+   const FA core.Suffix = "_FA"
+
+   var wrd gowords.WordsRepository
+   wrd, err := gowords.NewWordsRepository(stringSource, core.Separator, core.Comment)
+   if err != nil {
+      panic(err)
+   }
+
+   wordsEN, err := gowords.NewWithSuffix(wrd, EN)
+	if err != nil {
+		panic(err)
+	}
+
+	wordsFA, err := gowords.NewWithSuffix(wrd, FA)
+	if err != nil {
+		panic(err)
+	}
+
+   value1en := wordsEN.Get("key1")
+	println(value1en)  // OUTPUT: "Value 1 English"
+
+	value2en, found2en := wordsEN.Find("key2")
+   println(value2en)  // OUTPUT: "Value 2 English"
+
+	value1fa := wordsFA.Get("key1")
+	println(value1fa)  // OUTPUT: "Value 1 Farsi"
+
+	value2fa, found2fa := wordsFA.Find("key2")
+   println(value2fa)  // OUTPUT: "Value 2 Farsi"
+}
+```
+
+The `NewWithSuffix` function validate suffix on calling.
+
+
+
+## Helper functions
+
+There are some service functions, providing helper and utility functions, and also a simpler interface to working with APIs:
+
+- `GetBy`: a helper to search for a name by suffix and using `Get` method of `Words` object.
+
+```go
+const EN core.Suffix = "_EN"
+value1En := gowords.GetBy(wrd, "key1", EN)
+```
+
+- `FindBy`: a helper to search for a name by suffix and using `Find` method of `Words` object.
+
+```go
+const EN core.Suffix = "_EN"
+value1En, found := gowords.FindBy(wrd, "key1", EN)
+```
+
 
 
 ## Internationalization and Multi-Language
 
-To internationalization your messages, alerts and ..., visit [Wiki Internationalization](https://github.com/saleh-rahimzadeh/go-words/wiki/Internationalization).
+To internationalization your messages, alerts and texts, leverage `WithSuffix` API.
+
+Prior to version 1.1.0, visit [Wiki Internationalization](https://github.com/saleh-rahimzadeh/go-words/wiki/Internationalization).
 
 
 
@@ -253,11 +345,11 @@ goos: linux
 goarch: amd64
 pkg: github.com/saleh-rahimzadeh/go-words
 cpu: Intel(R) Core(TM) i3 CPU  @ 2.93GHz
-BenchmarkWordsCollection-4    20031225       62.34 ns/op         0 B/op        0 allocs/op
-BenchmarkWordsRepository-4       65712       16377 ns/op         1 B/op        0 allocs/op
-BenchmarkWordsFile-4              4556      237456 ns/op     19280 B/op     1001 allocs/op
-BenchmarkWordsFileUnsafe-4        5364      236756 ns/op     19280 B/op     1001 allocs/op
+BenchmarkWordsCollection-4    19909888     60.87 ns/op        0 B/op       0 allocs/op
+BenchmarkWordsRepository-4       63777     15852 ns/op        1 B/op       0 allocs/op
+BenchmarkWordsFile-4              7652    226539 ns/op    19280 B/op    1001 allocs/op
+BenchmarkWordsFileUnsafe-4        5421    228342 ns/op    19280 B/op    1001 allocs/op
 PASS
-coverage: 51.5% of statements
+coverage: 41.6% of statements
 ok    github.com/saleh-rahimzadeh/go-words  6.400s
 ```

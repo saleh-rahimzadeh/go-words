@@ -57,14 +57,13 @@ k3=v3
 
 func ExampleWordsRepository_customSeparator() {
 	const separator rune = ':'
-	const comment rune = '#'
 	const source string = `
 k1:v1
 k2:v2
 k3:v3
 `
 
-	w, err := gowords.NewWordsRepository(source, separator, comment)
+	w, err := gowords.NewWordsRepository(source, separator, core.Comment)
 	if err != nil {
 		panic(err)
 	}
@@ -76,7 +75,6 @@ k3:v3
 }
 
 func ExampleWordsRepository_customComment() {
-	const separator rune = '='
 	const comment rune = '@'
 	const source string = `
 k1=v1
@@ -84,7 +82,7 @@ k1=v1
 k2=v2
 `
 
-	w, err := gowords.NewWordsRepository(source, separator, comment)
+	w, err := gowords.NewWordsRepository(source, core.Separator, comment)
 	if err != nil {
 		panic(err)
 	}
@@ -184,28 +182,28 @@ k2_FA = v2 FA
 		FA core.Suffix = "_FA"
 	)
 
-	wEN, err := gowords.NewWithSuffix(words, EN)
+	wordsEN, err := gowords.NewWithSuffix(words, EN)
 	if err != nil {
 		panic(err)
 	}
 
-	wFA, err := gowords.NewWithSuffix(words, FA)
+	wordsFA, err := gowords.NewWithSuffix(words, FA)
 	if err != nil {
 		panic(err)
 	}
 
-	value1en := wEN.Get("k1")
+	value1en := wordsEN.Get("k1")
 	fmt.Println(value1en)
 
-	value2en, found2en := wEN.Find("k2")
+	value2en, found2en := wordsEN.Find("k2")
 	if found2en {
 		fmt.Println(value2en)
 	}
 
-	value1fa := wFA.Get("k1")
+	value1fa := wordsFA.Get("k1")
 	fmt.Println(value1fa)
 
-	value2fa, found2fa := wFA.Find("k2")
+	value2fa, found2fa := wordsFA.Find("k2")
 	if found2fa {
 		fmt.Println(value2fa)
 	}
