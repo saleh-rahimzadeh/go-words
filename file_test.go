@@ -31,11 +31,22 @@ func TestNewWordsFile(t *testing.T) {
 }
 
 func TestNewWordsFile_Instantiation(t *testing.T) {
-	file, err := os.Open(path.Join(path_WORDS, "valid__want"))
+	fileValid, err := os.Open(path.Join(path_WORDS, "valid__want"))
 	if err != nil {
 		t.Fatal(err)
 	}
-	defer file.Close()
+	defer fileValid.Close()
+	fileEmpty, err := os.CreateTemp("", "gowords_TestNewWordsFile_Instantiation_empty_file")
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer os.Remove(fileEmpty.Name())
+	defer fileEmpty.Close()
+	fileClosed, err := os.Open(path.Join(path_WORDS, "valid__want"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	fileClosed.Close()
 	type args struct {
 		file      *os.File
 		separator rune
@@ -47,9 +58,11 @@ func TestNewWordsFile_Instantiation(t *testing.T) {
 		want error
 	}{
 		{"check nil file", args{file: nil, separator: core.Separator, comment: core.Comment}, core.ErrNilFile},
-		{"check empty file", args{file: &os.File{}, separator: core.Separator, comment: core.Comment}, core.ErrNilFile},
-		{"check invalid separator delimiters", args{file: file, separator: 'x', comment: core.Comment}, core.ErrSeparatorIsInvalid},
-		{"check invalid comment delimiters", args{file: file, separator: core.Separator, comment: 'x'}, core.ErrCommentIsInvalid},
+		{"check zero file", args{file: &os.File{}, separator: core.Separator, comment: core.Comment}, core.ErrNilFile},
+		{"check closed file", args{file: fileClosed, separator: core.Separator, comment: core.Comment}, (os.PathError{}).Err},
+		{"check empty file", args{file: fileEmpty, separator: core.Separator, comment: core.Comment},core.ErrNilFile},
+		{"check invalid separator delimiters", args{file: fileValid, separator: 'x', comment: core.Comment}, core.ErrSeparatorIsInvalid},
+		{"check invalid comment delimiters", args{file: fileValid, separator: core.Separator, comment: 'x'}, core.ErrCommentIsInvalid},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
