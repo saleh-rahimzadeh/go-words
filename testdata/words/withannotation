@@ -1,0 +1,11 @@
+k1={{value}}
+k2={{value}},{{num}}
+k3=v3
+k4=
+person=Hi, my name is {{name}}, I'm {{age}} years old and a {{language}} developer.
+kindexed1={{1}}
+kindexed2={{1}},{{2}}
+personindexed=Hi, my name is {{1}}, I'm {{2}} years old and a {{3}} developer.
+kformatted1=%s
+kformatted2=%s,%d
+personformatted=Hi, my name is %s, I'm %d years old and a %v developer.
