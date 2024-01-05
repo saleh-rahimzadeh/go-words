@@ -20,6 +20,7 @@ func init() {
 	var _ Words = WordsCollection{}
 	var _ Words = WordsFile{}
 	var _ Words = WordsRepository{}
+	var _ Words = WithSuffix{}
 }
 
 func init() {
