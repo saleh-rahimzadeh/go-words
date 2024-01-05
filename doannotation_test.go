@@ -64,22 +64,23 @@ func TestDoAnnotation_GetNamed(t *testing.T) {
 	}
 	type args struct {
 		name      string
-		arguments map[string]string
+		arguments map[string]interface{}
 	}
 	tests := []struct {
 		name string
 		args args
 		want string
 	}{
-		{"single", args{name: "k1", arguments: map[string]string{"value": "v1"}}, "v1"},
-		{"multiple", args{name: "k2", arguments: map[string]string{"value": "v2", "num": "2"}}, "v2,2"},
-		{"person", args{name: "person", arguments: map[string]string{"name": "Saleh", "age": "38", "language": "Golang"}}, "Hi, my name is Saleh, I'm 38 years old and a Golang developer."},
+		{"single", args{name: "k1", arguments: map[string]interface{}{"value": "v1"}}, "v1"},
+		{"multiple", args{name: "k2", arguments: map[string]interface{}{"value": "v2", "num": 2}}, "v2,2"},
+		{"types", args{name: "k_types", arguments: map[string]interface{}{"string": "x", "integer": 1, "float": 2.2, "boolean": true}}, "x,1,2.2,true"},
+		{"person", args{name: "person", arguments: map[string]interface{}{"name": "Saleh", "age": 38, "language": "Golang"}}, "Hi, my name is Saleh, I'm 38 years old and a Golang developer."},
 		{"nil annotation arguments", args{name: "k1", arguments: nil}, "{{value}}"},
-		{"empty annotation argument", args{name: "k1", arguments: map[string]string{}}, "{{value}}"},
-		{"empty annotation", args{name: "k3", arguments: map[string]string{}}, "v3"},
-		{"empty value", args{name: "k4", arguments: map[string]string{"value": "v1"}}, internal.Empty},
-		{"absent annotation", args{name: "k1", arguments: map[string]string{key_NOTFOUND: "v1"}}, "{{value}}"},
-		{"notfound", args{name: key_NOTFOUND, arguments: map[string]string{"value": "v1"}}, internal.Empty},
+		{"empty annotation argument", args{name: "k1", arguments: map[string]interface{}{}}, "{{value}}"},
+		{"empty annotation", args{name: "k3", arguments: map[string]interface{}{}}, "v3"},
+		{"empty value", args{name: "k4", arguments: map[string]interface{}{"value": "v1"}}, internal.Empty},
+		{"absent annotation", args{name: "k1", arguments: map[string]interface{}{key_NOTFOUND: "v1"}}, "{{value}}"},
+		{"notfound", args{name: key_NOTFOUND, arguments: map[string]interface{}{"value": "v1"}}, internal.Empty},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -105,7 +106,7 @@ func TestDoAnnotation_FindNamed(t *testing.T) {
 	}
 	type args struct {
 		name      string
-		arguments map[string]string
+		arguments map[string]interface{}
 	}
 	tests := []struct {
 		name  string
@@ -113,14 +114,15 @@ func TestDoAnnotation_FindNamed(t *testing.T) {
 		want  string
 		found bool
 	}{
-		{"single", args{name: "k1", arguments: map[string]string{"value": "v1"}}, "v1", true},
-		{"multiple", args{name: "k2", arguments: map[string]string{"value": "v2", "num": "2"}}, "v2,2", true},
+		{"single", args{name: "k1", arguments: map[string]interface{}{"value": "v1"}}, "v1", true},
+		{"multiple", args{name: "k2", arguments: map[string]interface{}{"value": "v2", "num": 2}}, "v2,2", true},
+		{"types", args{name: "k_types", arguments: map[string]interface{}{"string": "x", "integer": 1, "float": 2.2, "boolean": true}}, "x,1,2.2,true", true},
 		{"nil annotation arguments", args{name: "k1", arguments: nil}, "{{value}}", true},
-		{"empty annotation argument", args{name: "k1", arguments: map[string]string{}}, "{{value}}", true},
-		{"empty annotation", args{name: "k3", arguments: map[string]string{}}, "v3", true},
-		{"empty value", args{name: "k4", arguments: map[string]string{"value": "v1"}}, internal.Empty, true},
-		{"absent annotation", args{name: "k1", arguments: map[string]string{key_NOTFOUND: "v1"}}, "{{value}}", true},
-		{"notfound", args{name: key_NOTFOUND, arguments: map[string]string{"value": "v1"}}, internal.Empty, false},
+		{"empty annotation argument", args{name: "k1", arguments: map[string]interface{}{}}, "{{value}}", true},
+		{"empty annotation", args{name: "k3", arguments: map[string]interface{}{}}, "v3", true},
+		{"empty value", args{name: "k4", arguments: map[string]interface{}{"value": "v1"}}, internal.Empty, true},
+		{"absent annotation", args{name: "k1", arguments: map[string]interface{}{key_NOTFOUND: "v1"}}, "{{value}}", true},
+		{"notfound", args{name: key_NOTFOUND, arguments: map[string]interface{}{"value": "v1"}}, internal.Empty, false},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -150,18 +152,19 @@ func TestDoAnnotation_GetIndexed(t *testing.T) {
 	}
 	type args struct {
 		name      string
-		arguments []string
+		arguments []interface{}
 	}
 	tests := []struct {
 		name string
 		args args
 		want string
 	}{
-		{"single", args{name: "kindexed1", arguments: []string{"v1"}}, "v1"},
-		{"multiple", args{name: "kindexed2", arguments: []string{"1", "2"}}, "1,2"},
-		{"disordered", args{name: "kindexed2_disordered", arguments: []string{"1", "2", "3", "4"}}, "2,1,4,3"},
-		{"over index", args{name: "kindexed1", arguments: []string{"1","2","3"}}, "1"},
-		{"person index", args{name: "personindexed", arguments: []string{"Saleh", "38", "Golang"}}, "Hi, my name is Saleh, I'm 38 years old and a Golang developer."},
+		{"single", args{name: "kindexed1", arguments: []interface{}{"v1"}}, "v1"},
+		{"multiple", args{name: "kindexed2", arguments: []interface{}{"1", 2}}, "1,2"},
+		{"types", args{name: "kindexed_types", arguments: []interface{}{"x", 1, 2.2, true}}, "x,1,2.2,true"},
+		{"disordered", args{name: "kindexed2_disordered", arguments: []interface{}{"1", 2, "3", 4}}, "2,1,4,3"},
+		{"over index", args{name: "kindexed1", arguments: []interface{}{"1","2","3"}}, "1"},
+		{"person index", args{name: "personindexed", arguments: []interface{}{"Saleh", 38, "Golang"}}, "Hi, my name is Saleh, I'm 38 years old and a Golang developer."},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -187,7 +190,7 @@ func TestDoAnnotation_FindIndexed(t *testing.T) {
 	}
 	type args struct {
 		name      string
-		arguments []string
+		arguments []interface{}
 	}
 	tests := []struct {
 		name  string
@@ -195,11 +198,12 @@ func TestDoAnnotation_FindIndexed(t *testing.T) {
 		want  string
 		found bool
 	}{
-		{"single", args{name: "kindexed1", arguments: []string{"v1"}}, "v1", true},
-		{"multiple", args{name: "kindexed2", arguments: []string{"1", "2"}}, "1,2", true},
-		{"disordered", args{name: "kindexed2_disordered", arguments: []string{"1", "2", "3", "4"}}, "2,1,4,3", true},
-		{"over index", args{name: "kindexed1", arguments: []string{"1","2","3"}}, "1", true},
-		{"person index", args{name: "personindexed", arguments: []string{"Saleh", "38", "Golang"}}, "Hi, my name is Saleh, I'm 38 years old and a Golang developer.", true},
+		{"single", args{name: "kindexed1", arguments: []interface{}{"v1"}}, "v1", true},
+		{"multiple", args{name: "kindexed2", arguments: []interface{}{"1", 2}}, "1,2", true},
+		{"types", args{name: "kindexed_types", arguments: []interface{}{"x", 1, 2.2, true}}, "x,1,2.2,true",true},
+		{"disordered", args{name: "kindexed2_disordered", arguments: []interface{}{"1", 2, "3", 4}}, "2,1,4,3", true},
+		{"over index", args{name: "kindexed1", arguments: []interface{}{"1","2","3"}}, "1", true},
+		{"person index", args{name: "personindexed", arguments: []interface{}{"Saleh", 38, "Golang"}}, "Hi, my name is Saleh, I'm 38 years old and a Golang developer.", true},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -238,6 +242,7 @@ func TestDoAnnotation_GetFormatted(t *testing.T) {
 	}{
 		{"single", args{name: "kformatted1", arguments: []interface{}{"v1"}}, "v1"},
 		{"multiple", args{name: "kformatted2", arguments: []interface{}{"1", 2}}, "1,2"},
+		{"types", args{name: "kformatted_types", arguments: []interface{}{"x", 1, 2.2, true}}, "x,1,2.200000,true"},
 		{"person index", args{name: "personformatted", arguments: []interface{}{"Saleh", 38, "Golang"}}, "Hi, my name is Saleh, I'm 38 years old and a Golang developer."},
 	}
 	for _, tt := range tests {
@@ -274,6 +279,7 @@ func TestDoAnnotation_FindFormatted(t *testing.T) {
 	}{
 		{"single", args{name: "kformatted1", arguments: []interface{}{"v1"}}, "v1", true},
 		{"multiple", args{name: "kformatted2", arguments: []interface{}{"1", 2}}, "1,2", true},
+		{"types", args{name: "kformatted_types", arguments: []interface{}{"x", 1, 2.2, true}}, "x,1,2.200000,true",true},
 		{"person index", args{name: "personformatted", arguments: []interface{}{"Saleh", 38, "Golang"}}, "Hi, my name is Saleh, I'm 38 years old and a Golang developer.", true},
 	}
 	for _, tt := range tests {
@@ -304,9 +310,9 @@ func BenchmarkDoAnnotationNamed(b *testing.B) {
 	}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		w.FindNamed("k1", map[string]string{
-			"first":  "one",
-			"second": "two",
+		w.FindNamed("k1", map[string]interface{}{
+			"first":  1,
+			"second": 2.22,
 			"three":  "three",
 		})
 	}
@@ -324,7 +330,7 @@ func BenchmarkDoAnnotationIndexed(b *testing.B) {
 	}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		w.FindIndexed("k1", "one", "two", "three")
+		w.FindIndexed("k1", 1, 2.22, "three")
 	}
 }
 
@@ -340,6 +346,6 @@ func BenchmarkDoAnnotationFormatted(b *testing.B) {
 	}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		w.FindFormatted("k1", "one", "two", "three")
+		w.FindFormatted("k1", 1, 2.22, "three")
 	}
 }

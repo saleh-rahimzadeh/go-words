@@ -21,14 +21,14 @@ type DoAnnotation struct {
 
 // GetNamed search for a name then return value if found, else return empty string.
 // Format value with named annotations.
-func (w DoAnnotation) GetNamed(name string, arguments map[string]string) string {
+func (w DoAnnotation) GetNamed(name string, arguments map[string]interface{}) string {
 	value, _ := w.FindNamed(name, arguments)
 	return value
 }
 
 // FindNamed search for a name then return value and `true` if found, else return empty string and `false`.
 // Format value with named annotations.
-func (w DoAnnotation) FindNamed(name string, arguments map[string]string) (string, bool) {
+func (w DoAnnotation) FindNamed(name string, arguments map[string]interface{}) (string, bool) {
 	value, found := w.Words.Find(name)
 	if !found {
 		return internal.Empty, false
@@ -41,7 +41,7 @@ func (w DoAnnotation) FindNamed(name string, arguments map[string]string) (strin
 
 // GetIndexed search for a name then return value if found, else return empty string.
 // Format value with indexed annotations.
-func (w DoAnnotation) GetIndexed(name string, arguments ...string) string {
+func (w DoAnnotation) GetIndexed(name string, arguments ...interface{}) string {
 	argumentMap := w.convertIndexesToMap(arguments)
 	value, _ := w.FindNamed(name, argumentMap)
 	return value
@@ -49,7 +49,7 @@ func (w DoAnnotation) GetIndexed(name string, arguments ...string) string {
 
 // FindIndexed search for a name then return value and `true` if found, else return empty string and `false`.
 // Format value with indexed annotations.
-func (w DoAnnotation) FindIndexed(name string, arguments ...string) (string, bool) {
+func (w DoAnnotation) FindIndexed(name string, arguments ...interface{}) (string, bool) {
 	argumentMap := w.convertIndexesToMap(arguments)
 	return w.FindNamed(name, argumentMap)
 }
@@ -78,21 +78,21 @@ func (w DoAnnotation) FindFormatted(name string, arguments ...interface{}) (stri
 //└─────────────────────────────────────────────────────────────────────────────────────────────────
 
 // replacer finds annotation tokens in input and replace with genuine value
-func (w DoAnnotation) replacer(input string, arguments map[string]string) string {
+func (w DoAnnotation) replacer(input string, arguments map[string]interface{}) string {
 	if arguments == nil {
 		return input
 	}
 	return internal.RegexAnnotation.ReplaceAllStringFunc(input, func(token string) string {
 		if value, ok := arguments[strings.Trim(token, internal.AnnotationDelimiters)]; ok {
-			return value
+			return fmt.Sprint(value)
 		}
 		return token
 	})
 }
 
 // convertIndexesToMap converts indexed annotations to map
-func (w DoAnnotation) convertIndexesToMap(arguments []string) map[string]string {
-	argumentMap := map[string]string{}
+func (w DoAnnotation) convertIndexesToMap(arguments []interface{}) map[string]interface{} {
+	argumentMap := map[string]interface{}{}
 	for index, value := range arguments {
 		argumentMap[strconv.Itoa(index+1)] = value
 	}

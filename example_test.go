@@ -235,14 +235,14 @@ person_formatted=Hi, my name is %s, when I was %d years old I was a %v developer
 		panic(err)
 	}
 
-	value1person := words.GetNamed("person_named", map[string]string{
+	value1person := words.GetNamed("person_named", map[string]interface{}{
 		"name": "Saleh",
 		"age": "15",
 		"language": "Assembly",
 	})
 	fmt.Println(value1person)
 
-	value2person, found_person := words.FindNamed("person_named", map[string]string{
+	value2person, found_person := words.FindNamed("person_named", map[string]interface{}{
 		"name": "Saleh",
 		"age": "17",
 		"language": "Pascal",
