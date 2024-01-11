@@ -163,7 +163,7 @@ func TestDoAnnotation_GetIndexed(t *testing.T) {
 		{"multiple", args{name: "kindexed2", arguments: []interface{}{"1", 2}}, "1,2"},
 		{"types", args{name: "kindexed_types", arguments: []interface{}{"x", 1, 2.2, true}}, "x,1,2.2,true"},
 		{"disordered", args{name: "kindexed2_disordered", arguments: []interface{}{"1", 2, "3", 4}}, "2,1,4,3"},
-		{"over index", args{name: "kindexed1", arguments: []interface{}{"1","2","3"}}, "1"},
+		{"over index", args{name: "kindexed1", arguments: []interface{}{"1", "2", "3"}}, "1"},
 		{"person index", args{name: "personindexed", arguments: []interface{}{"Saleh", 38, "Golang"}}, "Hi, my name is Saleh, I'm 38 years old and a Golang developer."},
 	}
 	for _, tt := range tests {
@@ -200,9 +200,9 @@ func TestDoAnnotation_FindIndexed(t *testing.T) {
 	}{
 		{"single", args{name: "kindexed1", arguments: []interface{}{"v1"}}, "v1", true},
 		{"multiple", args{name: "kindexed2", arguments: []interface{}{"1", 2}}, "1,2", true},
-		{"types", args{name: "kindexed_types", arguments: []interface{}{"x", 1, 2.2, true}}, "x,1,2.2,true",true},
+		{"types", args{name: "kindexed_types", arguments: []interface{}{"x", 1, 2.2, true}}, "x,1,2.2,true", true},
 		{"disordered", args{name: "kindexed2_disordered", arguments: []interface{}{"1", 2, "3", 4}}, "2,1,4,3", true},
-		{"over index", args{name: "kindexed1", arguments: []interface{}{"1","2","3"}}, "1", true},
+		{"over index", args{name: "kindexed1", arguments: []interface{}{"1", "2", "3"}}, "1", true},
 		{"person index", args{name: "personindexed", arguments: []interface{}{"Saleh", 38, "Golang"}}, "Hi, my name is Saleh, I'm 38 years old and a Golang developer.", true},
 	}
 	for _, tt := range tests {
@@ -279,8 +279,10 @@ func TestDoAnnotation_FindFormatted(t *testing.T) {
 	}{
 		{"single", args{name: "kformatted1", arguments: []interface{}{"v1"}}, "v1", true},
 		{"multiple", args{name: "kformatted2", arguments: []interface{}{"1", 2}}, "1,2", true},
-		{"types", args{name: "kformatted_types", arguments: []interface{}{"x", 1, 2.2, true}}, "x,1,2.200000,true",true},
+		{"types", args{name: "kformatted_types", arguments: []interface{}{"x", 1, 2.2, true}}, "x,1,2.200000,true", true},
 		{"person index", args{name: "personformatted", arguments: []interface{}{"Saleh", 38, "Golang"}}, "Hi, my name is Saleh, I'm 38 years old and a Golang developer.", true},
+		{"notfound", args{name: key_NOTFOUND, arguments: []interface{}{}}, internal.Empty, false},
+		{"empty", args{name: "k4", arguments: []interface{}{}}, internal.Empty, true},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

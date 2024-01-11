@@ -7,9 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-- Adding get and find with prefix
+## [1.1.0] - 2024-01-11
 
-## [1.0.4] - 2023-12-
+### Added
+
+- Adding `WithSuffix` API
+- Adding `Suffix` type in "Core" package
+- Adding `DoAnnotation` API
+- File state and emptiness checking for `WordsFile`
+- Adding helper functions:
+  - `GetBy`
+  - `FindBy`
+
+### Changed
+
+- Proper error message for benchmarks
+
+## [1.0.4] - 2023-12-21
 
 ### Added
 

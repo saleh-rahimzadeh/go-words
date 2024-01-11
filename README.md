@@ -1,14 +1,15 @@
 go-words
 ========
 
-[![Release](https://img.shields.io/github/v/release/saleh-rahimzadeh/go-words)](https://github.com/saleh-rahimzadeh/go-words/releases/latest)
+[![Release](https://img.shields.io/github/v/release/saleh-rahimzadeh/go-words?filter=v1.1.0&label=Release
+)](https://github.com/saleh-rahimzadeh/go-words/releases/tag/v1.1.0)
 ![Go version](https://img.shields.io/github/go-mod/go-version/saleh-rahimzadeh/go-words)
 [![Go Reference](https://pkg.go.dev/badge/github.com/saleh-rahimzadeh/go-words.svg)](https://pkg.go.dev/github.com/saleh-rahimzadeh/go-words)
 [![Test Status](https://github.com/saleh-rahimzadeh/go-words/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/saleh-rahimzadeh/go-words/actions/workflows/test.yml?query=branch%3Amain)
-![Coverage](https://img.shields.io/badge/Coverage-94.8%25-brightgreen)
+![Coverage](https://img.shields.io/badge/Coverage-95.7%25-brightgreen)
 [![codecov](https://codecov.io/gh/saleh-rahimzadeh/go-words/graph/badge.svg?token=O4EXLIR5ZN)](https://codecov.io/gh/saleh-rahimzadeh/go-words)
 [![Go Report Card](https://goreportcard.com/badge/github.com/saleh-rahimzadeh/go-words)](https://goreportcard.com/report/github.com/saleh-rahimzadeh/go-words)
-[![Awesome Go](https://awesome.re/mentioned-badge.svg)](https://awesome-go.com/translation)
+<!-- [![Awesome Go](https://awesome.re/mentioned-badge.svg)](https://awesome-go.com/translation) -->
 
 The **go-words** is a words table and text resource library for Golang projects.
 
@@ -256,7 +257,7 @@ To use `WithSuffix`:
 
    It's better to concate your key and suffixe with `_` character.
 
-2. Define a variable of `Suffix` type from `core` package and instantiate `WithSuffix` API with a instance of `Words` interface (a instance of `NewWordsRepository`, `NewWordsCollection`, and `NewWordsFile`) and defined suffix.
+2. Define a variable of `Suffix` type from `core` package and instantiate `WithSuffix` API with a instance of `Words` interface (an instance of `NewWordsRepository`, `NewWordsCollection`, and `NewWordsFile`) and defined suffix.
 
 3. Using `Get` and `Find` methods of `WithSuffix` instance to search for a name which applied suffix.
 
@@ -296,17 +297,73 @@ key3_FA = Value 3 Farsi
 	println(value1en)  // OUTPUT: "Value 1 English"
 
 	value2en, found2en := wordsEN.Find("key2")
-   println(value2en)  // OUTPUT: "Value 2 English"
+   println(value2en, found2en)  // OUTPUT: "Value 2 English", true
 
 	value1fa := wordsFA.Get("key1")
 	println(value1fa)  // OUTPUT: "Value 1 Farsi"
 
 	value2fa, found2fa := wordsFA.Find("key2")
-   println(value2fa)  // OUTPUT: "Value 2 Farsi"
+   println(value2fa, found2fa)  // OUTPUT: "Value 2 Farsi", true
 }
 ```
 
 The `NewWithSuffix` function validate suffix on calling.
+
+
+
+## Annotations
+
+Using `DoAnnotation` API to format value according to an annotation or a format specifier.
+
+There are 3 types of annotations:
+- Named: format value using named tokens like `{{name}}` by `GetNamed` and `FindNamed` methods.
+- Indexed: format value using indexed tokens like `{{1}}` by `GetIndexed` and `FindIndexed` methods.
+- Formatted: format value using formatted verbs (https://pkg.go.dev/fmt#hdr-Printing) like `%s` by `GetFormatted` and `FindFormatted` methods.
+
+```go
+func main() {
+   const stringSource string = `
+key_named = Application {{name}} , Version {{ver}}.
+key_indexed = Application {{1}} , Version {{2}}.
+key_formatted = Application %s , Version %d.
+`
+
+   var wRepository gowords.WordsRepository
+   wRepository, err := gowords.NewWordsRepository(stringSource, core.Separator, core.Comment)
+   if err != nil {
+      panic(err)
+   }
+
+   words, err := gowords.NewDoAnnotation(wRepository)
+	if err != nil {
+		panic(err)
+	}
+
+   value1 := words.GetNamed("key_named", map[string]string{
+		"name": "MyAppX",
+		"age": "111",
+	})
+	fmt.Println(value1)  // OUTPUT: "Application MyAppX , Version 111"
+
+   value2, found2 := words.FindNamed("key_named", map[string]string{
+		"name": "MyAppZ",
+		"age": "222",
+	})
+	fmt.Println(value2, found2)  // OUTPUT: "Application MyAppZ , Version 222", true
+
+   value3 := words.GetIndexed("key_indexed", "MyAppQ", 333)
+	fmt.Println(value3)  // OUTPUT: "Application MyAppQ , Version 333"
+
+	value4, found4 := words.FindIndexed("key_indexed", "MyAppW", 444)
+   fmt.Println(value4, found4)  // OUTPUT: "Application MyAppW , Version 444"
+
+	value5 := words.GetFormatted("key_formatted", "MyAppN", 555)
+	fmt.Println(value5)  // OUTPUT: "Application MyAppN , Version 555"
+
+	value6, found6 := words.FindFormatted("key_formatted", "MyAppM", 666)
+   fmt.Println(value6, found6)  // OUTPUT: "Application MyAppM , Version 666"
+}
+```
 
 
 
@@ -345,10 +402,13 @@ goos: linux
 goarch: amd64
 pkg: github.com/saleh-rahimzadeh/go-words
 cpu: Intel(R) Core(TM) i3 CPU  @ 2.93GHz
-BenchmarkWordsCollection-4    19909888     60.87 ns/op        0 B/op       0 allocs/op
-BenchmarkWordsRepository-4       63777     15852 ns/op        1 B/op       0 allocs/op
-BenchmarkWordsFile-4              7652    226539 ns/op    19280 B/op    1001 allocs/op
-BenchmarkWordsFileUnsafe-4        5421    228342 ns/op    19280 B/op    1001 allocs/op
+BenchmarkWordsCollection-4            20426679        62.60 ns/op          0 B/op       0 allocs/op
+BenchmarkWordsRepository-4               65107        16248 ns/op          1 B/op       0 allocs/op
+BenchmarkWordsFile-4                      4713       227575 ns/op      19280 B/op    1001 allocs/op
+BenchmarkWordsFileUnsafe-4                5746       206768 ns/op      19280 B/op    1001 allocs/op
+BenchmarkDoAnnotationNamed-4            352963         4641 ns/op        152 B/op       6 allocs/op
+BenchmarkDoAnnotationIndexed-4          171255         6257 ns/op        498 B/op       9 allocs/op
+BenchmarkDoAnnotationFormatted-4       1000000         1040 ns/op         64 B/op       1 allocs/op
 PASS
 coverage: 41.6% of statements
 ok    github.com/saleh-rahimzadeh/go-words  6.400s
