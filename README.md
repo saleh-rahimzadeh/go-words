@@ -29,13 +29,13 @@ Import:
 
 ```go
 import (
-   "github.com/saleh-rahimzadeh/go-words"
-   "github.com/saleh-rahimzadeh/go-words/core"
+  "github.com/saleh-rahimzadeh/go-words"
+  "github.com/saleh-rahimzadeh/go-words/core"
 )
 /* OR */
 import (
-   gowords "github.com/saleh-rahimzadeh/go-words"
-   core    "github.com/saleh-rahimzadeh/go-words/core"
+  gowords "github.com/saleh-rahimzadeh/go-words"
+  core    "github.com/saleh-rahimzadeh/go-words/core"
 )
 ```
 
@@ -108,9 +108,8 @@ load_position = top left
 Suppling source in code:
 
 ```go
-func main() {
-   // Source string
-   var stringSource string = `
+// Source string
+const stringSource string = `
 App = MyApp
 Version = 1.0
 Descriptin = An enterprise application
@@ -120,10 +119,9 @@ left location = 10
 right location = 20
 load_position = top left
 `
-   // Source file
-   var fileSource *os.File
-   fileSource, err := os.Open("<path_to_string_file>")
-}
+// Source file
+var fileSource *os.File
+fileSource, err := os.Open("<path_to_string_file>")
 ```
 
 
@@ -144,29 +142,29 @@ GoWords contains 3 type of APIs which each one have different source and storage
 
 To create `WordsRepository` and `WordsCollection` instances use `NewWordsRepository`, `NewWordsCollection` functions and provide source, separator character and comment character.
 
-WordsRepository example:
+`WordsRepository` example:
 
 ```go
 func main() {
-   const separator = '='
-   const comment = '#'
-   var err error
+  const separator = '='
+  const comment = '#'
+  var err error
 
-   var wrd gowords.WordsRepository
-   wrd, err = gowords.NewWordsRepository(stringSource, separator, comment)
+  var wrd gowords.WordsRepository
+  wrd, err = gowords.NewWordsRepository(stringSource, separator, comment)
 }
 ```
 
-WordsCollection example:
+`WordsCollection` example:
 
 ```go
 func main() {
-   const separator = '='
-   const comment = '#'
-   var err error
+  const separator = '='
+  const comment = '#'
+  var err error
 
-   var wrd gowords.WordsCollection
-   wrd, err = gowords.NewWordsCollection(stringSource, separator, comment)
+  var wrd gowords.WordsCollection
+  wrd, err = gowords.NewWordsCollection(stringSource, separator, comment)
 }
 ```
 
@@ -176,16 +174,16 @@ To create `WordsFile` instance use `NewWordsFile` function and provide source, s
 
 ```go
 func main() {
-   const separator = '='
-   const comment = '#'
-   var err error
+  const separator = '='
+  const comment = '#'
+  var err error
 
-   var fileSource *os.File
-   fileSource, err = os.Open("<path_to_string_file>")
-   defer fileSource.Close()
+  var fileSource *os.File
+  fileSource, err = os.Open("<path_to_string_file>")
+  defer fileSource.Close()
 
-   var wrd gowords.NewWordsFile
-   wrd, err = gowords.NewWordsFile(fileSource, separator, comment)
+  var wrd gowords.NewWordsFile
+  wrd, err = gowords.NewWordsFile(fileSource, separator, comment)
 }
 ```
 
@@ -263,7 +261,7 @@ To use `WithSuffix`:
 
 ```go
 func main() {
-   const stringSource string = `
+  const stringSource string = `
 key1_EN = Value 1 English
 key1_FA = Value 1 Farsi
 
@@ -274,36 +272,36 @@ key3_EN = Value 3 English
 key3_FA = Value 3 Farsi
 `
 
-   const EN core.Suffix = "_EN"
-   const FA core.Suffix = "_FA"
+  const EN core.Suffix = "_EN"
+  const FA core.Suffix = "_FA"
 
-   var wrd gowords.WordsRepository
-   wrd, err := gowords.NewWordsRepository(stringSource, core.Separator, core.Comment)
-   if err != nil {
-      panic(err)
-   }
+  var wrd gowords.WordsRepository
+  wrd, err := gowords.NewWordsRepository(stringSource, core.Separator, core.Comment)
+  if err != nil {
+    panic(err)
+  }
 
-   wordsEN, err := gowords.NewWithSuffix(wrd, EN)
-	if err != nil {
-		panic(err)
-	}
+  wordsEN, err := gowords.NewWithSuffix(wrd, EN)
+  if err != nil {
+    panic(err)
+  }
 
-	wordsFA, err := gowords.NewWithSuffix(wrd, FA)
-	if err != nil {
-		panic(err)
-	}
+  wordsFA, err := gowords.NewWithSuffix(wrd, FA)
+  if err != nil {
+    panic(err)
+  }
 
-   value1en := wordsEN.Get("key1")
-	println(value1en)  // OUTPUT: "Value 1 English"
+  value1en := wordsEN.Get("key1")
+  println(value1en)  // OUTPUT: "Value 1 English"
 
-	value2en, found2en := wordsEN.Find("key2")
-   println(value2en, found2en)  // OUTPUT: "Value 2 English", true
+  value2en, found2en := wordsEN.Find("key2")
+  println(value2en, found2en)  // OUTPUT: "Value 2 English", true
 
-	value1fa := wordsFA.Get("key1")
-	println(value1fa)  // OUTPUT: "Value 1 Farsi"
+  value1fa := wordsFA.Get("key1")
+  println(value1fa)  // OUTPUT: "Value 1 Farsi"
 
-	value2fa, found2fa := wordsFA.Find("key2")
-   println(value2fa, found2fa)  // OUTPUT: "Value 2 Farsi", true
+  value2fa, found2fa := wordsFA.Find("key2")
+  println(value2fa, found2fa)  // OUTPUT: "Value 2 Farsi", true
 }
 ```
 
@@ -322,46 +320,46 @@ There are 3 types of annotations:
 
 ```go
 func main() {
-   const stringSource string = `
+  const stringSource string = `
 key_named = Application {{name}} , Version {{ver}}.
 key_indexed = Application {{1}} , Version {{2}}.
 key_formatted = Application %s , Version %d.
 `
 
-   var wRepository gowords.WordsRepository
-   wRepository, err := gowords.NewWordsRepository(stringSource, core.Separator, core.Comment)
-   if err != nil {
-      panic(err)
-   }
+  var wRepository gowords.WordsRepository
+  wRepository, err := gowords.NewWordsRepository(stringSource, core.Separator, core.Comment)
+  if err != nil {
+    panic(err)
+  }
 
-   words, err := gowords.NewDoAnnotation(wRepository)
-	if err != nil {
-		panic(err)
-	}
+  words, err := gowords.NewDoAnnotation(wRepository)
+  if err != nil {
+    panic(err)
+  }
 
-   value1 := words.GetNamed("key_named", map[string]string{
-		"name": "MyAppX",
-		"age": "111",
-	})
-	fmt.Println(value1)  // OUTPUT: "Application MyAppX , Version 111"
+  value1 := words.GetNamed("key_named", map[string]string{
+    "name": "MyAppX",
+    "age": "111",
+  })
+  fmt.Println(value1)  // OUTPUT: "Application MyAppX , Version 111"
 
-   value2, found2 := words.FindNamed("key_named", map[string]string{
-		"name": "MyAppZ",
-		"age": "222",
-	})
-	fmt.Println(value2, found2)  // OUTPUT: "Application MyAppZ , Version 222", true
+  value2, found2 := words.FindNamed("key_named", map[string]string{
+    "name": "MyAppZ",
+    "age": "222",
+  })
+  fmt.Println(value2, found2)  // OUTPUT: "Application MyAppZ , Version 222", true
 
-   value3 := words.GetIndexed("key_indexed", "MyAppQ", 333)
-	fmt.Println(value3)  // OUTPUT: "Application MyAppQ , Version 333"
+  value3 := words.GetIndexed("key_indexed", "MyAppQ", 333)
+  fmt.Println(value3)  // OUTPUT: "Application MyAppQ , Version 333"
 
-	value4, found4 := words.FindIndexed("key_indexed", "MyAppW", 444)
-   fmt.Println(value4, found4)  // OUTPUT: "Application MyAppW , Version 444"
+  value4, found4 := words.FindIndexed("key_indexed", "MyAppW", 444)
+  fmt.Println(value4, found4)  // OUTPUT: "Application MyAppW , Version 444"
 
-	value5 := words.GetFormatted("key_formatted", "MyAppN", 555)
-	fmt.Println(value5)  // OUTPUT: "Application MyAppN , Version 555"
+  value5 := words.GetFormatted("key_formatted", "MyAppN", 555)
+  fmt.Println(value5)  // OUTPUT: "Application MyAppN , Version 555"
 
-	value6, found6 := words.FindFormatted("key_formatted", "MyAppM", 666)
-   fmt.Println(value6, found6)  // OUTPUT: "Application MyAppM , Version 666"
+  value6, found6 := words.FindFormatted("key_formatted", "MyAppM", 666)
+  fmt.Println(value6, found6)  // OUTPUT: "Application MyAppM , Version 666"
 }
 ```
 
@@ -413,3 +411,13 @@ PASS
 coverage: 41.6% of statements
 ok    github.com/saleh-rahimzadeh/go-words  6.400s
 ```
+
+
+
+## Architecture Decisions
+
+Architecture decision records (ADR) and design specifications:
+
+| Index | Description |
+| ----- | ----------- |
+| [01](doc/architecture-01.md) | Deciding on a parsing strategy |
