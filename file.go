@@ -155,6 +155,13 @@ func NewWordsFile(file *os.File, separator rune, comment rune) (w WordsFile, err
 	if file == nil || reflect.ValueOf(*file).IsZero() {
 		return WordsFile{}, core.ErrNilFile
 	}
+	fileStat, err := file.Stat()
+	if err != nil {
+		return WordsFile{}, err
+	}
+	if fileStat.Size() == 0 {
+		return WordsFile{}, core.ErrNilFile
+	}
 
 	var (
 		separatorCharacter string = string(separator)

@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"strings"
+	"unicode"
 
 	"github.com/saleh-rahimzadeh/go-words/core"
 )
@@ -42,6 +43,18 @@ func ValidationName(name string) (string, bool) {
 		return Empty, false
 	}
 	return name, true
+}
+
+// ValidationSuffix check suffix validation and return right trimed suffix, return flase if suffix is invalid
+func ValidationSuffix(suffix string) (string, bool) {
+	suffix = strings.TrimRightFunc(suffix, unicode.IsSpace)
+	if suffix == Empty {
+		return Empty, false
+	}
+	if strings.Contains(suffix, NewLine) {
+		return Empty, false
+	}
+	return suffix, true
 }
 
 // Extract search for a name in line and return value and true if found, else return empty string and false if not found

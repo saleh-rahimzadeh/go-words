@@ -19,3 +19,10 @@ var (
 	RegexSeparator *regexp.Regexp = regexp.MustCompile(`^[=|:;,.?@]{1}$`)
 	RegexComments  *regexp.Regexp = regexp.MustCompile(`^[#|:;,.?@]{1}$`)
 )
+
+//┌ Annotation
+//└─────────────────────────────────────────────────────────────────────────────────────────────────
+
+var RegexAnnotation *regexp.Regexp = regexp.MustCompile(`{{\s*(\w+)\s*}}`)
+
+const AnnotationDelimiters string = "{} "

@@ -14,10 +14,6 @@ import (
 //┌ Test
 //└─────────────────────────────────────────────────────────────────────────────────────────────────
 
-func TestWordsRepository_Words_InterfaceSatisfaction(t *testing.T) {
-	var _ Words = WordsRepository{}
-}
-
 func TestNewWordsRepository(t *testing.T) {
 	// Arrange
 	valid_source, err := os.ReadFile(path.Join(path_WORDS, "valid__source"))
@@ -142,7 +138,7 @@ func BenchmarkWordsRepository(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		_, found := w.Find("k1000")
 		if !found {
-			b.Fatal("error not found")
+			b.Fatal(benchmark_KEY_NOTFOUND)
 		}
 	}
 }

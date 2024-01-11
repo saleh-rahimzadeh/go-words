@@ -12,13 +12,15 @@ const (
 )
 
 const (
-	key_NOTFOUND string = "NOT_FOUND_KEY"
+	key_NOTFOUND           string = "NOT_FOUND_KEY"
+	benchmark_KEY_NOTFOUND string = "error: key not found, please generate words for benchmarking by `make generate` command"
 )
 
 func init() {
 	var _ Words = WordsCollection{}
 	var _ Words = WordsFile{}
 	var _ Words = WordsRepository{}
+	var _ Words = WithSuffix{}
 }
 
 func init() {

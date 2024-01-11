@@ -1,0 +1,15 @@
+k1={{value}}
+k2={{value}},{{num}}
+k3=v3
+k4=
+k_types={{string}},{{integer}},{{float}},{{boolean}}
+person=Hi, my name is {{name}}, I'm {{age}} years old and a {{language}} developer.
+kindexed1={{1}}
+kindexed2={{1}},{{2}}
+kindexed2_disordered={{2}},{{1}},{{4}},{{3}}
+kindexed_types={{1}},{{2}},{{3}},{{4}}
+personindexed=Hi, my name is {{1}}, I'm {{2}} years old and a {{3}} developer.
+kformatted1=%s
+kformatted2=%s,%d
+personformatted=Hi, my name is %s, I'm %d years old and a %v developer.
+kformatted_types=%s,%d,%f,%t
