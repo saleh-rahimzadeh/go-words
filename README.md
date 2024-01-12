@@ -43,28 +43,29 @@ import (
 
 ## Source
 
-A source is a string or a file which contains text lines (each line separated by line break).
+A source is a string or a file that contains text lines, each separated by a line break.
 
-Each line must contains a _key_ and _value_ pair which the key has been separated by a separator character from value .
+Each line must contain a _key_ and _value_ pair, with the key separated from the value by a separator character.
 
-A **key** must be a unique word and searchable.
-A key can be a single word or multiple words string.
+A **key** must be a unique and searchable word.
+It can be a single word or a phrase.
 
-A **value** can be a single word or multiple words string (or empty).
+A **value** can be a single word, a phrase, or empty.
 
-All leading and trailing white spaces of key and value will be trimmed and removed on loading.
+All leading and trailing whitespace of the key and value will be trimmed and removed upon loading.
 
-A **separator** is a single delimiter character which separate key and value in each line.
-Default separator character is `=` (`rune` type) and also you can use other valid characters such as `|`, `:`, `;`, `,`, `.`, `?` and `@`.
+A **separator** is a single delimiter character that separates the key and value in each line.
+The default separator character is `=` (of `rune` type).
+Other valid characters such as `|`, `:`, `;`, `,`, `.`, `?`, and `@` can also be used.
 
-A line also can be a comment or empty line.
+A line can also be a comment or an empty line.
 
-A **comment** is a line which started with a comment character.
-Default comment character is `#` (`rune` type) and also you can use other valid characters such as `|`, `:`, `;`, `,`, `.`, `?` and `@`.
+A **comment** is a line that starts with a comment character.
+The default comment character is `#` (of `rune` type), but other valid characters such as `|`, `:`, `;`, `,`, `.`, `?`, and `@` can also be used.
 
-All comments and empty lines will be removed on loading.
+All comments and empty lines will be removed upon loading.
 
-You can't use same character for both separator and comment.
+You cannot use the same character for both the separator and the comment.
 
 Source Outline:
 
@@ -128,7 +129,7 @@ fileSource, err := os.Open("<path_to_string_file>")
 
 ## APIs
 
-GoWords contains 3 type of APIs which each one have different source and storage, so they have different performance.
+The **go-words** contain 3 different types of APIs, each with a different source and storage, so they have different performances, throughput, and resource usage.
 
 | API               | Source     | Storage    | Source Validation    | Resource Usage |
 |-------------------|------------|------------|----------------------|----------------|
@@ -418,6 +419,7 @@ ok    github.com/saleh-rahimzadeh/go-words  6.400s
 
 Architecture decision records (ADR) and design specifications:
 
-| Index | Description |
-| ----- | ----------- |
+| Index                        | Description                    |
+| ---------------------------- | ------------------------------ |
 | [01](doc/architecture-01.md) | Deciding on a parsing strategy |
+| [02](doc/architecture-02.md) | Providing different storages   |
