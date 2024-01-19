@@ -1,8 +1,7 @@
 go-words
 ========
 
-[![Release](https://img.shields.io/github/v/release/saleh-rahimzadeh/go-words?filter=v1.1.0&label=Release
-)](https://github.com/saleh-rahimzadeh/go-words/releases/tag/v1.1.0)
+[![Release](https://img.shields.io/github/v/release/saleh-rahimzadeh/go-words?filter=v1.1.1&label=Release)](https://github.com/saleh-rahimzadeh/go-words/releases/tag/v1.1.1)
 ![Go version](https://img.shields.io/github/go-mod/go-version/saleh-rahimzadeh/go-words)
 [![Go Reference](https://pkg.go.dev/badge/github.com/saleh-rahimzadeh/go-words.svg)](https://pkg.go.dev/github.com/saleh-rahimzadeh/go-words)
 [![Test Status](https://github.com/saleh-rahimzadeh/go-words/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/saleh-rahimzadeh/go-words/actions/workflows/test.yml?query=branch%3Amain)
@@ -403,13 +402,13 @@ pkg: github.com/saleh-rahimzadeh/go-words
 cpu: Intel(R) Core(TM) i3 CPU  @ 2.93GHz
 BenchmarkWordsCollection-4            20426679        62.60 ns/op          0 B/op       0 allocs/op
 BenchmarkWordsRepository-4               65107        16248 ns/op          1 B/op       0 allocs/op
-BenchmarkWordsFile-4                      4713       227575 ns/op      19280 B/op    1001 allocs/op
-BenchmarkWordsFileUnsafe-4                5746       206768 ns/op      19280 B/op    1001 allocs/op
+BenchmarkWordsFile-4                      9357       191994 ns/op      19280 B/op    1001 allocs/op
+BenchmarkWordsFileUnsafe-4                5299       238233 ns/op      19280 B/op    1001 allocs/op
 BenchmarkDoAnnotationNamed-4            352963         4641 ns/op        152 B/op       6 allocs/op
 BenchmarkDoAnnotationIndexed-4          171255         6257 ns/op        498 B/op       9 allocs/op
 BenchmarkDoAnnotationFormatted-4       1000000         1040 ns/op         64 B/op       1 allocs/op
 PASS
-coverage: 41.6% of statements
+coverage: 46.2% of statements
 ok    github.com/saleh-rahimzadeh/go-words  6.400s
 ```
 

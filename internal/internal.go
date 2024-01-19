@@ -3,6 +3,8 @@ package internal
 import (
 	"errors"
 	"fmt"
+	"os"
+	"reflect"
 	"strings"
 	"unicode"
 
@@ -55,6 +57,21 @@ func ValidationSuffix(suffix string) (string, bool) {
 		return Empty, false
 	}
 	return suffix, true
+}
+
+// ValidationFile check file stat and size
+func ValidationFile(file *os.File) error {
+	if file == nil || reflect.ValueOf(*file).IsZero() {
+		return core.ErrFileNil
+	}
+	fileStat, err := file.Stat()
+	if err != nil {
+		return err
+	}
+	if fileStat.Size() < 1 {
+		return core.ErrFileEmpty
+	}
+	return nil
 }
 
 // Extract search for a name in line and return value and true if found, else return empty string and false if not found

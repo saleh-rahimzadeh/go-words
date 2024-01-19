@@ -28,7 +28,8 @@ var (
 	ErrCommentIsInvalid        error = errors.New("comment character is invalid, the comment parameter must be one character delimiter of (#|:;,.?@)")
 	ErrLineEmpty               error = errors.New("line is empty")
 	ErrLineComment             error = errors.New("line is comment")
-	ErrNilFile                 error = errors.New("file is nil")
+	ErrFileNil                 error = errors.New("file is nil")
+	ErrFileEmpty               error = errors.New("file is empty")
 	ErrSuffixIsInvalid         error = errors.New("suffix is invalid")
 )
 

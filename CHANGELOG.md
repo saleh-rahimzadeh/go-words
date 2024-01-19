@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.1] - 2024-01-19
+
+### Added
+
+- Adding validation for file
+
+### Changed
+
+- Proper errors for `WordsFile`
+
 ## [1.1.0] - 2024-01-11
 
 ### Added

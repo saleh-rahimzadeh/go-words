@@ -57,10 +57,10 @@ func TestNewWordsFile_Instantiation(t *testing.T) {
 		args args
 		want error
 	}{
-		{"check nil file", args{file: nil, separator: core.Separator, comment: core.Comment}, core.ErrNilFile},
-		{"check zero file", args{file: &os.File{}, separator: core.Separator, comment: core.Comment}, core.ErrNilFile},
+		{"check nil file", args{file: nil, separator: core.Separator, comment: core.Comment}, core.ErrFileNil},
+		{"check zero instance file", args{file: &os.File{}, separator: core.Separator, comment: core.Comment}, core.ErrFileNil},
 		{"check closed file", args{file: fileClosed, separator: core.Separator, comment: core.Comment}, (os.PathError{}).Err},
-		{"check empty file", args{file: fileEmpty, separator: core.Separator, comment: core.Comment}, core.ErrNilFile},
+		{"check empty file", args{file: fileEmpty, separator: core.Separator, comment: core.Comment}, core.ErrFileEmpty},
 		{"check invalid separator delimiters", args{file: fileValid, separator: 'x', comment: core.Comment}, core.ErrSeparatorIsInvalid},
 		{"check invalid comment delimiters", args{file: fileValid, separator: core.Separator, comment: 'x'}, core.ErrCommentIsInvalid},
 	}
