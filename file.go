@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"io"
 	"os"
-	"reflect"
 	"sync"
 
 	"github.com/saleh-rahimzadeh/go-words/core"
@@ -151,16 +150,10 @@ func (w *WordsFile) Err() error {
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 
 // NewWordsFile create a new instance of WordsFile
-func NewWordsFile(file *os.File, separator rune, comment rune) (w WordsFile, err error) {
-	if file == nil || reflect.ValueOf(*file).IsZero() {
-		return WordsFile{}, core.ErrNilFile
-	}
-	fileStat, err := file.Stat()
+func NewWordsFile(file *os.File, separator rune, comment rune) (WordsFile, error) {
+	err := internal.ValidationFile(file)
 	if err != nil {
 		return WordsFile{}, err
-	}
-	if fileStat.Size() == 0 {
-		return WordsFile{}, core.ErrNilFile
 	}
 
 	var (

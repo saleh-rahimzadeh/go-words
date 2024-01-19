@@ -372,6 +372,46 @@ func TestValidationSuffix(t *testing.T) {
 	}
 }
 
+func TestValidationFile(t *testing.T) {
+	fileValid, err := os.Open(path.Join(path_WORDS, "valid__want"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer fileValid.Close()
+	if err := ValidationFile(fileValid); err != nil {
+		t.Errorf("TestValidationFile() error = %v", err)
+		return
+	}
+	fileEmpty, err := os.CreateTemp("", "gowords_TestValidationFile_empty_file")
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer os.Remove(fileEmpty.Name())
+	defer fileEmpty.Close()
+	fileClosed, err := os.Open(path.Join(path_WORDS, "valid__want"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	fileClosed.Close()
+	tests := []struct {
+		name string
+		file *os.File
+		want error
+	}{
+		{"check nil file", nil, core.ErrFileNil},
+		{"check zero instance file", &os.File{}, core.ErrFileNil},
+		{"check closed file", fileClosed, (os.PathError{}).Err},
+		{"check empty file", fileEmpty, core.ErrFileEmpty},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := ValidationFile(tt.file); got == nil {
+				t.Errorf("ValidationFile() got nil error, want %v", tt.want)
+			}
+		})
+	}
+}
+
 //┌ Benchmark
 //└─────────────────────────────────────────────────────────────────────────────────────────────────
 
