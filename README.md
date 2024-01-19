@@ -29,13 +29,13 @@ Import:
 
 ```go
 import (
-   "github.com/saleh-rahimzadeh/go-words"
-   "github.com/saleh-rahimzadeh/go-words/core"
+  "github.com/saleh-rahimzadeh/go-words"
+  "github.com/saleh-rahimzadeh/go-words/core"
 )
 /* OR */
 import (
-   gowords "github.com/saleh-rahimzadeh/go-words"
-   core    "github.com/saleh-rahimzadeh/go-words/core"
+  gowords "github.com/saleh-rahimzadeh/go-words"
+  core    "github.com/saleh-rahimzadeh/go-words/core"
 )
 ```
 
@@ -43,28 +43,29 @@ import (
 
 ## Source
 
-A source is a string or a file which contains text lines (each line separated by line break).
+A source is a string or a file that contains text lines, each separated by a line break.
 
-Each line must contains a _key_ and _value_ pair which the key has been separated by a separator character from value .
+Each line must contain a _key_ and _value_ pair, with the key separated from the value by a separator character.
 
-A **key** must be a unique word and searchable.
-A key can be a single word or multiple words string.
+A **key** must be a unique and searchable word.
+It can be a single word or a phrase.
 
-A **value** can be a single word or multiple words string (or empty).
+A **value** can be a single word, a phrase, or empty.
 
-All leading and trailing white spaces of key and value will be trimmed and removed on loading.
+All leading and trailing whitespace of the key and value will be trimmed and removed upon loading.
 
-A **separator** is a single delimiter character which separate key and value in each line.
-Default separator character is `=` (`rune` type) and also you can use other valid characters such as `|`, `:`, `;`, `,`, `.`, `?` and `@`.
+A **separator** is a single delimiter character that separates the key and value in each line.
+The default separator character is `=` (of `rune` type).
+Other valid characters such as `|`, `:`, `;`, `,`, `.`, `?`, and `@` can also be used.
 
-A line also can be a comment or empty line.
+A line can also be a comment or an empty line.
 
-A **comment** is a line which started with a comment character.
-Default comment character is `#` (`rune` type) and also you can use other valid characters such as `|`, `:`, `;`, `,`, `.`, `?` and `@`.
+A **comment** is a line that starts with a comment character.
+The default comment character is `#` (of `rune` type), but other valid characters such as `|`, `:`, `;`, `,`, `.`, `?`, and `@` can also be used.
 
-All comments and empty lines will be removed on loading.
+All comments and empty lines will be removed upon loading.
 
-You can't use same character for both separator and comment.
+You cannot use the same character for both the separator and the comment.
 
 Source Outline:
 
@@ -108,9 +109,8 @@ load_position = top left
 Suppling source in code:
 
 ```go
-func main() {
-   // Source string
-   var stringSource string = `
+// Source string
+const stringSource string = `
 App = MyApp
 Version = 1.0
 Descriptin = An enterprise application
@@ -120,17 +120,16 @@ left location = 10
 right location = 20
 load_position = top left
 `
-   // Source file
-   var fileSource *os.File
-   fileSource, err := os.Open("<path_to_string_file>")
-}
+// Source file
+var fileSource *os.File
+fileSource, err := os.Open("<path_to_string_file>")
 ```
 
 
 
 ## APIs
 
-GoWords contains 3 type of APIs which each one have different source and storage, so they have different performance.
+The **go-words** contain 3 different types of APIs, each with a different source and storage, so they have different performances, throughput, and resource usage.
 
 | API               | Source     | Storage    | Source Validation    | Resource Usage |
 |-------------------|------------|------------|----------------------|----------------|
@@ -144,29 +143,29 @@ GoWords contains 3 type of APIs which each one have different source and storage
 
 To create `WordsRepository` and `WordsCollection` instances use `NewWordsRepository`, `NewWordsCollection` functions and provide source, separator character and comment character.
 
-WordsRepository example:
+`WordsRepository` example:
 
 ```go
 func main() {
-   const separator = '='
-   const comment = '#'
-   var err error
+  const separator = '='
+  const comment = '#'
+  var err error
 
-   var wrd gowords.WordsRepository
-   wrd, err = gowords.NewWordsRepository(stringSource, separator, comment)
+  var wrd gowords.WordsRepository
+  wrd, err = gowords.NewWordsRepository(stringSource, separator, comment)
 }
 ```
 
-WordsCollection example:
+`WordsCollection` example:
 
 ```go
 func main() {
-   const separator = '='
-   const comment = '#'
-   var err error
+  const separator = '='
+  const comment = '#'
+  var err error
 
-   var wrd gowords.WordsCollection
-   wrd, err = gowords.NewWordsCollection(stringSource, separator, comment)
+  var wrd gowords.WordsCollection
+  wrd, err = gowords.NewWordsCollection(stringSource, separator, comment)
 }
 ```
 
@@ -176,16 +175,16 @@ To create `WordsFile` instance use `NewWordsFile` function and provide source, s
 
 ```go
 func main() {
-   const separator = '='
-   const comment = '#'
-   var err error
+  const separator = '='
+  const comment = '#'
+  var err error
 
-   var fileSource *os.File
-   fileSource, err = os.Open("<path_to_string_file>")
-   defer fileSource.Close()
+  var fileSource *os.File
+  fileSource, err = os.Open("<path_to_string_file>")
+  defer fileSource.Close()
 
-   var wrd gowords.NewWordsFile
-   wrd, err = gowords.NewWordsFile(fileSource, separator, comment)
+  var wrd gowords.NewWordsFile
+  wrd, err = gowords.NewWordsFile(fileSource, separator, comment)
 }
 ```
 
@@ -263,7 +262,7 @@ To use `WithSuffix`:
 
 ```go
 func main() {
-   const stringSource string = `
+  const stringSource string = `
 key1_EN = Value 1 English
 key1_FA = Value 1 Farsi
 
@@ -274,36 +273,36 @@ key3_EN = Value 3 English
 key3_FA = Value 3 Farsi
 `
 
-   const EN core.Suffix = "_EN"
-   const FA core.Suffix = "_FA"
+  const EN core.Suffix = "_EN"
+  const FA core.Suffix = "_FA"
 
-   var wrd gowords.WordsRepository
-   wrd, err := gowords.NewWordsRepository(stringSource, core.Separator, core.Comment)
-   if err != nil {
-      panic(err)
-   }
+  var wrd gowords.WordsRepository
+  wrd, err := gowords.NewWordsRepository(stringSource, core.Separator, core.Comment)
+  if err != nil {
+    panic(err)
+  }
 
-   wordsEN, err := gowords.NewWithSuffix(wrd, EN)
-	if err != nil {
-		panic(err)
-	}
+  wordsEN, err := gowords.NewWithSuffix(wrd, EN)
+  if err != nil {
+    panic(err)
+  }
 
-	wordsFA, err := gowords.NewWithSuffix(wrd, FA)
-	if err != nil {
-		panic(err)
-	}
+  wordsFA, err := gowords.NewWithSuffix(wrd, FA)
+  if err != nil {
+    panic(err)
+  }
 
-   value1en := wordsEN.Get("key1")
-	println(value1en)  // OUTPUT: "Value 1 English"
+  value1en := wordsEN.Get("key1")
+  println(value1en)  // OUTPUT: "Value 1 English"
 
-	value2en, found2en := wordsEN.Find("key2")
-   println(value2en, found2en)  // OUTPUT: "Value 2 English", true
+  value2en, found2en := wordsEN.Find("key2")
+  println(value2en, found2en)  // OUTPUT: "Value 2 English", true
 
-	value1fa := wordsFA.Get("key1")
-	println(value1fa)  // OUTPUT: "Value 1 Farsi"
+  value1fa := wordsFA.Get("key1")
+  println(value1fa)  // OUTPUT: "Value 1 Farsi"
 
-	value2fa, found2fa := wordsFA.Find("key2")
-   println(value2fa, found2fa)  // OUTPUT: "Value 2 Farsi", true
+  value2fa, found2fa := wordsFA.Find("key2")
+  println(value2fa, found2fa)  // OUTPUT: "Value 2 Farsi", true
 }
 ```
 
@@ -322,46 +321,46 @@ There are 3 types of annotations:
 
 ```go
 func main() {
-   const stringSource string = `
+  const stringSource string = `
 key_named = Application {{name}} , Version {{ver}}.
 key_indexed = Application {{1}} , Version {{2}}.
 key_formatted = Application %s , Version %d.
 `
 
-   var wRepository gowords.WordsRepository
-   wRepository, err := gowords.NewWordsRepository(stringSource, core.Separator, core.Comment)
-   if err != nil {
-      panic(err)
-   }
+  var wRepository gowords.WordsRepository
+  wRepository, err := gowords.NewWordsRepository(stringSource, core.Separator, core.Comment)
+  if err != nil {
+    panic(err)
+  }
 
-   words, err := gowords.NewDoAnnotation(wRepository)
-	if err != nil {
-		panic(err)
-	}
+  words, err := gowords.NewDoAnnotation(wRepository)
+  if err != nil {
+    panic(err)
+  }
 
-   value1 := words.GetNamed("key_named", map[string]string{
-		"name": "MyAppX",
-		"age": "111",
-	})
-	fmt.Println(value1)  // OUTPUT: "Application MyAppX , Version 111"
+  value1 := words.GetNamed("key_named", map[string]string{
+    "name": "MyAppX",
+    "age": "111",
+  })
+  fmt.Println(value1)  // OUTPUT: "Application MyAppX , Version 111"
 
-   value2, found2 := words.FindNamed("key_named", map[string]string{
-		"name": "MyAppZ",
-		"age": "222",
-	})
-	fmt.Println(value2, found2)  // OUTPUT: "Application MyAppZ , Version 222", true
+  value2, found2 := words.FindNamed("key_named", map[string]string{
+    "name": "MyAppZ",
+    "age": "222",
+  })
+  fmt.Println(value2, found2)  // OUTPUT: "Application MyAppZ , Version 222", true
 
-   value3 := words.GetIndexed("key_indexed", "MyAppQ", 333)
-	fmt.Println(value3)  // OUTPUT: "Application MyAppQ , Version 333"
+  value3 := words.GetIndexed("key_indexed", "MyAppQ", 333)
+  fmt.Println(value3)  // OUTPUT: "Application MyAppQ , Version 333"
 
-	value4, found4 := words.FindIndexed("key_indexed", "MyAppW", 444)
-   fmt.Println(value4, found4)  // OUTPUT: "Application MyAppW , Version 444"
+  value4, found4 := words.FindIndexed("key_indexed", "MyAppW", 444)
+  fmt.Println(value4, found4)  // OUTPUT: "Application MyAppW , Version 444"
 
-	value5 := words.GetFormatted("key_formatted", "MyAppN", 555)
-	fmt.Println(value5)  // OUTPUT: "Application MyAppN , Version 555"
+  value5 := words.GetFormatted("key_formatted", "MyAppN", 555)
+  fmt.Println(value5)  // OUTPUT: "Application MyAppN , Version 555"
 
-	value6, found6 := words.FindFormatted("key_formatted", "MyAppM", 666)
-   fmt.Println(value6, found6)  // OUTPUT: "Application MyAppM , Version 666"
+  value6, found6 := words.FindFormatted("key_formatted", "MyAppM", 666)
+  fmt.Println(value6, found6)  // OUTPUT: "Application MyAppM , Version 666"
 }
 ```
 
@@ -413,3 +412,14 @@ PASS
 coverage: 41.6% of statements
 ok    github.com/saleh-rahimzadeh/go-words  6.400s
 ```
+
+
+
+## Architecture Decisions
+
+Architecture decision records (ADR) and design specifications:
+
+| Index                        | Description                    |
+| ---------------------------- | ------------------------------ |
+| [01](doc/architecture-01.md) | Deciding on a parsing strategy |
+| [02](doc/architecture-02.md) | Providing different storages   |
