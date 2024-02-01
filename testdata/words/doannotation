@@ -8,6 +8,7 @@ kindexed1={{1}}
 kindexed2={{1}},{{2}}
 kindexed2_disordered={{2}},{{1}},{{4}},{{3}}
 kindexed_types={{1}},{{2}},{{3}},{{4}}
+kindexed_nonindex={{value}}
 personindexed=Hi, my name is {{1}}, I'm {{2}} years old and a {{3}} developer.
 kformatted1=%s
 kformatted2=%s,%d

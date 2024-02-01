@@ -10,12 +10,13 @@
 COVERAGE_FILE          = testdata/coverage.out
 COVERAGE_ANALYSIS_FILE = testdata/coverage.analysis.out
 
-BRANCH := v1.1
+BRANCH := v1.2
 
 # ------------------------------------------------------------------------------
 
 help:
 	@egrep "^##" Makefile|sed 's/##//g'
+.PHONY:help
 
 release:
 	@echo "► release"
@@ -74,12 +75,14 @@ misspell:
 
 ## generate      : Generate fake large words for benchmarking
 generate:
+	@echo "► generate"
 	@cd testdata/scripts; \
 	./generate_words.sh
 .PHONY:generate
 
 ## generate_ps   : Generate fake large words for benchmarking by PowerShell script
 generate_ps:
+	@echo "► generate_ps"
 	@cd testdata/scripts; \
 	pwsh -File ./generate_words.ps1
 .PHONY:generate_ps

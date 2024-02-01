@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0] - 2024-02-01
+
+### Added
+
+- More tests for `DoAnnotation`
+
+### Changed
+
+- Bump Go to 1.18
+- Refactor empty interfaces to `any`
+
 ## [1.1.1] - 2024-01-19
 
 ### Added
@@ -84,8 +95,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - WordsCollection
 - WordsFile
 
-[unreleased]: https://github.com/saleh-rahimzadeh/go-words/compare/v1.0.0...HEAD
-[1.0.0]: https://github.com/saleh-rahimzadeh/go-words/releases/tag/v1.0.0
-[1.0.1]: https://github.com/saleh-rahimzadeh/go-words/releases/tag/v1.0.1
-[1.0.2]: https://github.com/saleh-rahimzadeh/go-words/releases/tag/v1.0.2
+[1.2.0]: https://github.com/saleh-rahimzadeh/go-words/releases/tag/v1.2.0
+[1.1.1]: https://github.com/saleh-rahimzadeh/go-words/releases/tag/v1.1.1
+[1.1.0]: https://github.com/saleh-rahimzadeh/go-words/releases/tag/v1.1.0
+[1.0.4]: https://github.com/saleh-rahimzadeh/go-words/releases/tag/v1.0.4
 [1.0.3]: https://github.com/saleh-rahimzadeh/go-words/releases/tag/v1.0.3
+[1.0.2]: https://github.com/saleh-rahimzadeh/go-words/releases/tag/v1.0.2
+[1.0.1]: https://github.com/saleh-rahimzadeh/go-words/releases/tag/v1.0.1
+[1.0.0]: https://github.com/saleh-rahimzadeh/go-words/releases/tag/v1.0.0
