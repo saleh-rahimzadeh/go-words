@@ -21,14 +21,14 @@ type DoAnnotation struct {
 
 // GetNamed search for a name then return value if found, else return empty string.
 // Format value with named annotations.
-func (w DoAnnotation) GetNamed(name string, arguments map[string]interface{}) string {
+func (w DoAnnotation) GetNamed(name string, arguments map[string]any) string {
 	value, _ := w.FindNamed(name, arguments)
 	return value
 }
 
 // FindNamed search for a name then return value and `true` if found, else return empty string and `false`.
 // Format value with named annotations.
-func (w DoAnnotation) FindNamed(name string, arguments map[string]interface{}) (string, bool) {
+func (w DoAnnotation) FindNamed(name string, arguments map[string]any) (string, bool) {
 	value, found := w.Words.Find(name)
 	if !found {
 		return internal.Empty, false
@@ -41,7 +41,7 @@ func (w DoAnnotation) FindNamed(name string, arguments map[string]interface{}) (
 
 // GetIndexed search for a name then return value if found, else return empty string.
 // Format value with indexed annotations.
-func (w DoAnnotation) GetIndexed(name string, arguments ...interface{}) string {
+func (w DoAnnotation) GetIndexed(name string, arguments ...any) string {
 	argumentMap := w.convertIndexesToMap(arguments)
 	value, _ := w.FindNamed(name, argumentMap)
 	return value
@@ -49,21 +49,21 @@ func (w DoAnnotation) GetIndexed(name string, arguments ...interface{}) string {
 
 // FindIndexed search for a name then return value and `true` if found, else return empty string and `false`.
 // Format value with indexed annotations.
-func (w DoAnnotation) FindIndexed(name string, arguments ...interface{}) (string, bool) {
+func (w DoAnnotation) FindIndexed(name string, arguments ...any) (string, bool) {
 	argumentMap := w.convertIndexesToMap(arguments)
 	return w.FindNamed(name, argumentMap)
 }
 
 // GetNamed search for a name then return value if found, else return empty string.
 // Format value with formatted verbs according to "https://pkg.go.dev/fmt#hdr-Printing".
-func (w DoAnnotation) GetFormatted(name string, arguments ...interface{}) string {
+func (w DoAnnotation) GetFormatted(name string, arguments ...any) string {
 	value, _ := w.FindFormatted(name, arguments...)
 	return value
 }
 
 // FindFormatted search for a name then return value and `true` if found, else return empty string and `false`.
 // Format value with formatted verbs according to "https://pkg.go.dev/fmt#hdr-Printing".
-func (w DoAnnotation) FindFormatted(name string, arguments ...interface{}) (string, bool) {
+func (w DoAnnotation) FindFormatted(name string, arguments ...any) (string, bool) {
 	value, found := w.Words.Find(name)
 	if !found {
 		return internal.Empty, false
@@ -78,7 +78,7 @@ func (w DoAnnotation) FindFormatted(name string, arguments ...interface{}) (stri
 //└─────────────────────────────────────────────────────────────────────────────────────────────────
 
 // replacer finds annotation tokens in input and replace with genuine value
-func (w DoAnnotation) replacer(input string, arguments map[string]interface{}) string {
+func (w DoAnnotation) replacer(input string, arguments map[string]any) string {
 	if arguments == nil {
 		return input
 	}
@@ -91,8 +91,8 @@ func (w DoAnnotation) replacer(input string, arguments map[string]interface{}) s
 }
 
 // convertIndexesToMap converts indexed annotations to map
-func (w DoAnnotation) convertIndexesToMap(arguments []interface{}) map[string]interface{} {
-	argumentMap := map[string]interface{}{}
+func (w DoAnnotation) convertIndexesToMap(arguments []any) map[string]any {
+	argumentMap := map[string]any{}
 	for index, value := range arguments {
 		argumentMap[strconv.Itoa(index+1)] = value
 	}
