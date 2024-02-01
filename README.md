@@ -1,7 +1,7 @@
 go-words
 ========
 
-[![Release](https://img.shields.io/github/v/release/saleh-rahimzadeh/go-words?filter=v1.1.1&label=Release)](https://github.com/saleh-rahimzadeh/go-words/releases/tag/v1.1.1)
+[![Release](https://img.shields.io/github/v/release/saleh-rahimzadeh/go-words?filter=v1.2.0&label=Release)](https://github.com/saleh-rahimzadeh/go-words/releases/tag/v1.2.0)
 ![Go version](https://img.shields.io/github/go-mod/go-version/saleh-rahimzadeh/go-words)
 [![Go Reference](https://pkg.go.dev/badge/github.com/saleh-rahimzadeh/go-words.svg)](https://pkg.go.dev/github.com/saleh-rahimzadeh/go-words)
 [![Test Status](https://github.com/saleh-rahimzadeh/go-words/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/saleh-rahimzadeh/go-words/actions/workflows/test.yml?query=branch%3Amain)
