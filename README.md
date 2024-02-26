@@ -8,7 +8,7 @@ go-words
 ![Coverage](https://img.shields.io/badge/Coverage-95.7%25-brightgreen)
 [![codecov](https://codecov.io/gh/saleh-rahimzadeh/go-words/graph/badge.svg?token=O4EXLIR5ZN)](https://codecov.io/gh/saleh-rahimzadeh/go-words)
 [![Go Report Card](https://goreportcard.com/badge/github.com/saleh-rahimzadeh/go-words)](https://goreportcard.com/report/github.com/saleh-rahimzadeh/go-words)
-<!-- [![Awesome Go](https://awesome.re/mentioned-badge.svg)](https://awesome-go.com/translation) -->
+[![Awesome Go](https://awesome.re/mentioned-badge.svg)](https://awesome-go.com/translation)
 
 The **go-words** is a words table and text resource library for Golang projects.
 
